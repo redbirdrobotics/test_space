@@ -1,6 +1,6 @@
-devel_space: /home/alexander/alex_test_ws/devel
+devel_space: /home/alexander/test_space/devel
 install: false
-install_space: /home/alexander/alex_test_ws/install
+install_space: /home/alexander/test_space/install
 profile: default
-source_space: /home/alexander/alex_test_ws/src
-workspace: /home/alexander/alex_test_ws
+source_space: /home/alexander/test_space/src
+workspace: /home/alexander/test_space

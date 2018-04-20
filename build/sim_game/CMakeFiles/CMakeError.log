@@ -1,24 +1,24 @@
 Determining if the pthread_create exist failed with the following output:
-Change Dir: /home/alexander/alex_test_ws/build/sim_game/CMakeFiles/CMakeTmp
+Change Dir: /home/alexander/test_space/build/sim_game/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_ea6ac/fast"
-/usr/bin/make -f CMakeFiles/cmTC_ea6ac.dir/build.make CMakeFiles/cmTC_ea6ac.dir/build
-make[1]: Entering directory '/home/alexander/alex_test_ws/build/sim_game/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_ea6ac.dir/CheckSymbolExists.c.o
-/usr/bin/cc     -o CMakeFiles/cmTC_ea6ac.dir/CheckSymbolExists.c.o   -c /home/alexander/alex_test_ws/build/sim_game/CMakeFiles/CMakeTmp/CheckSymbolExists.c
-Linking C executable cmTC_ea6ac
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_ea6ac.dir/link.txt --verbose=1
-/usr/bin/cc       CMakeFiles/cmTC_ea6ac.dir/CheckSymbolExists.c.o  -o cmTC_ea6ac -rdynamic 
-CMakeFiles/cmTC_ea6ac.dir/CheckSymbolExists.c.o: In function `main':
+Run Build Command:"/usr/bin/make" "cmTC_4da18/fast"
+/usr/bin/make -f CMakeFiles/cmTC_4da18.dir/build.make CMakeFiles/cmTC_4da18.dir/build
+make[1]: Entering directory '/home/alexander/test_space/build/sim_game/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_4da18.dir/CheckSymbolExists.c.o
+/usr/bin/cc     -o CMakeFiles/cmTC_4da18.dir/CheckSymbolExists.c.o   -c /home/alexander/test_space/build/sim_game/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+Linking C executable cmTC_4da18
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_4da18.dir/link.txt --verbose=1
+/usr/bin/cc       CMakeFiles/cmTC_4da18.dir/CheckSymbolExists.c.o  -o cmTC_4da18 -rdynamic 
+CMakeFiles/cmTC_4da18.dir/CheckSymbolExists.c.o: In function `main':
 CheckSymbolExists.c:(.text+0x16): undefined reference to `pthread_create'
 collect2: error: ld returned 1 exit status
-CMakeFiles/cmTC_ea6ac.dir/build.make:97: recipe for target 'cmTC_ea6ac' failed
-make[1]: *** [cmTC_ea6ac] Error 1
-make[1]: Leaving directory '/home/alexander/alex_test_ws/build/sim_game/CMakeFiles/CMakeTmp'
-Makefile:126: recipe for target 'cmTC_ea6ac/fast' failed
-make: *** [cmTC_ea6ac/fast] Error 2
+CMakeFiles/cmTC_4da18.dir/build.make:97: recipe for target 'cmTC_4da18' failed
+make[1]: *** [cmTC_4da18] Error 1
+make[1]: Leaving directory '/home/alexander/test_space/build/sim_game/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_4da18/fast' failed
+make: *** [cmTC_4da18/fast] Error 2
 
-File /home/alexander/alex_test_ws/build/sim_game/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+File /home/alexander/test_space/build/sim_game/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
 /* */
 #include <pthread.h>
 
@@ -34,22 +34,22 @@ int main(int argc, char** argv)
 }
 
 Determining if the function pthread_create exists in the pthreads failed with the following output:
-Change Dir: /home/alexander/alex_test_ws/build/sim_game/CMakeFiles/CMakeTmp
+Change Dir: /home/alexander/test_space/build/sim_game/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_ef04c/fast"
-/usr/bin/make -f CMakeFiles/cmTC_ef04c.dir/build.make CMakeFiles/cmTC_ef04c.dir/build
-make[1]: Entering directory '/home/alexander/alex_test_ws/build/sim_game/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_ef04c.dir/CheckFunctionExists.c.o
-/usr/bin/cc    -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_ef04c.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
-Linking C executable cmTC_ef04c
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_ef04c.dir/link.txt --verbose=1
-/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create    CMakeFiles/cmTC_ef04c.dir/CheckFunctionExists.c.o  -o cmTC_ef04c -rdynamic -lpthreads 
+Run Build Command:"/usr/bin/make" "cmTC_81fcd/fast"
+/usr/bin/make -f CMakeFiles/cmTC_81fcd.dir/build.make CMakeFiles/cmTC_81fcd.dir/build
+make[1]: Entering directory '/home/alexander/test_space/build/sim_game/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_81fcd.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_81fcd.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_81fcd
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_81fcd.dir/link.txt --verbose=1
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create    CMakeFiles/cmTC_81fcd.dir/CheckFunctionExists.c.o  -o cmTC_81fcd -rdynamic -lpthreads 
 /usr/bin/ld: cannot find -lpthreads
 collect2: error: ld returned 1 exit status
-CMakeFiles/cmTC_ef04c.dir/build.make:97: recipe for target 'cmTC_ef04c' failed
-make[1]: *** [cmTC_ef04c] Error 1
-make[1]: Leaving directory '/home/alexander/alex_test_ws/build/sim_game/CMakeFiles/CMakeTmp'
-Makefile:126: recipe for target 'cmTC_ef04c/fast' failed
-make: *** [cmTC_ef04c/fast] Error 2
+CMakeFiles/cmTC_81fcd.dir/build.make:97: recipe for target 'cmTC_81fcd' failed
+make[1]: *** [cmTC_81fcd] Error 1
+make[1]: Leaving directory '/home/alexander/test_space/build/sim_game/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_81fcd/fast' failed
+make: *** [cmTC_81fcd/fast] Error 2
 
 

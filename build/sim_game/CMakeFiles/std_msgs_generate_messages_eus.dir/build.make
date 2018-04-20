@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/alexander/alex_test_ws/src/sim_game
+CMAKE_SOURCE_DIR = /home/alexander/test_space/src/sim_game
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/alexander/alex_test_ws/build/sim_game
+CMAKE_BINARY_DIR = /home/alexander/test_space/build/sim_game
 
 # Utility rule file for std_msgs_generate_messages_eus.
 
@@ -67,6 +67,6 @@ CMakeFiles/std_msgs_generate_messages_eus.dir/clean:
 .PHONY : CMakeFiles/std_msgs_generate_messages_eus.dir/clean
 
 CMakeFiles/std_msgs_generate_messages_eus.dir/depend:
-	cd /home/alexander/alex_test_ws/build/sim_game && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/alexander/alex_test_ws/src/sim_game /home/alexander/alex_test_ws/src/sim_game /home/alexander/alex_test_ws/build/sim_game /home/alexander/alex_test_ws/build/sim_game /home/alexander/alex_test_ws/build/sim_game/CMakeFiles/std_msgs_generate_messages_eus.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/alexander/test_space/build/sim_game && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/alexander/test_space/src/sim_game /home/alexander/test_space/src/sim_game /home/alexander/test_space/build/sim_game /home/alexander/test_space/build/sim_game /home/alexander/test_space/build/sim_game/CMakeFiles/std_msgs_generate_messages_eus.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/std_msgs_generate_messages_eus.dir/depend
 

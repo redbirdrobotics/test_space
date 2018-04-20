@@ -1,1 +1,1 @@
-/home/alexander/alex_test_ws/devel/.private/sim_game/lib/pkgconfig/sim_game.pc
+/home/alexander/test_space/devel/.private/sim_game/lib/pkgconfig/sim_game.pc

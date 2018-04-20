@@ -4,11 +4,13 @@ config.py
 Contains a bunch of modifiable constants organized by
 module type.
 '''
+
+# from real_game.redbird import Corvus
 import re
 import numpy as np
 
 _const_rgx = re.compile('(([A-Z_][A-Z0-9_]*)|(__.*__))$')
-
+ 
 def load(module):
     '''
     Copies all module-level constants from `module`
@@ -106,3 +108,28 @@ MISSION_OBSTACLE_SPAWN_RADIUS = 5
 # (note: hopefully someone can implement fragment shaders
 # and this will become irrelevant)
 GRAPHICS_CIRCLE_VERTICES = 10
+
+AGENT = None
+
+DRONE_MAX_VERTICAL_VELOCITY = 1.0
+DRONE_MAX_HORIZ_ACCEL = 3.0
+DRONE_MAX_HORIZ_VELOCITY = 3.0
+
+# CONTROLLER = WaypointDemoController
+
+# TASKS = {
+#     'HoldPositionTask': HoldPositionTask,
+#     'XYZTranslationTask': XYZTranslationTask,
+#     'TakeoffTask': TakeoffTask,
+#     'GoToRoombaTask': GoToRoombaTask,
+#     'TrackRoombaTask': TrackRoombaTask,
+#     'HitRoombaTask': HitRoombaTask,
+#     'LandTask': LandTask,
+#     'BlockRoombaTask': BlockRoombaTask,
+#     'VelocityTask': VelocityTask
+# }
+
+# STATES = {
+#     'DroneState': DroneState,
+#     'RoombaState': RoombaState
+# }

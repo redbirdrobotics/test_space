@@ -7,7 +7,7 @@
 # new environment variables
 
 # modified environment variables
-export CMAKE_PREFIX_PATH="/home/alexander/alex_test_ws/devel/.private/sim_game:$CMAKE_PREFIX_PATH"
-export PWD="/home/alexander/alex_test_ws/build/sim_game"
-export ROSLISP_PACKAGE_DIRECTORIES="/home/alexander/alex_test_ws/devel/.private/sim_game/share/common-lisp:$ROSLISP_PACKAGE_DIRECTORIES"
-export ROS_PACKAGE_PATH="/home/alexander/alex_test_ws/src/sim_game:$ROS_PACKAGE_PATH"
+export CMAKE_PREFIX_PATH="/home/alexander/test_space/devel/.private/sim_game:$CMAKE_PREFIX_PATH"
+export PWD="/home/alexander/test_space/build/sim_game"
+export ROSLISP_PACKAGE_DIRECTORIES="/home/alexander/test_space/devel/.private/sim_game/share/common-lisp:$ROSLISP_PACKAGE_DIRECTORIES"
+export ROS_PACKAGE_PATH="/home/alexander/test_space/src/sim_game:$ROS_PACKAGE_PATH"

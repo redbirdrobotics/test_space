@@ -19,7 +19,7 @@ Behavior:
 import numpy as np
 import random
 
-import roombasim.config as cfg
+import real_game.config as cfg
 
 class Roomba(object):
     '''

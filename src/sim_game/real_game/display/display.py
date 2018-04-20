@@ -17,10 +17,10 @@ from pyglet.gl import *
 import numpy as np
 import time
 
-import roombasim.config as cfg
+import real_game.config as cfg
 
-from roombasim.environment import roomba
-from roombasim import geometry
+from real_game.robots import roomba
+from real_game import geometry
 
 class Display(pyglet.window.Window):
 
