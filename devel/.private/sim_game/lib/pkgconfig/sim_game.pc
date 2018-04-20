@@ -1,0 +1,8 @@
+prefix=/home/alexander/alex_test_ws/devel/.private/sim_game
+
+Name: sim_game
+Description: Description of sim_game
+Version: 0.0.0
+Cflags: 
+Libs: -L/home/alexander/alex_test_ws/devel/.private/sim_game/lib 
+Requires: 
