@@ -1,22 +1,22 @@
 Determining if the pthread_create exist failed with the following output:
 Change Dir: /home/alexander/test_space/build/sim_game/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_4da18/fast"
-/usr/bin/make -f CMakeFiles/cmTC_4da18.dir/build.make CMakeFiles/cmTC_4da18.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_de68a/fast"
+/usr/bin/make -f CMakeFiles/cmTC_de68a.dir/build.make CMakeFiles/cmTC_de68a.dir/build
 make[1]: Entering directory '/home/alexander/test_space/build/sim_game/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_4da18.dir/CheckSymbolExists.c.o
-/usr/bin/cc     -o CMakeFiles/cmTC_4da18.dir/CheckSymbolExists.c.o   -c /home/alexander/test_space/build/sim_game/CMakeFiles/CMakeTmp/CheckSymbolExists.c
-Linking C executable cmTC_4da18
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_4da18.dir/link.txt --verbose=1
-/usr/bin/cc       CMakeFiles/cmTC_4da18.dir/CheckSymbolExists.c.o  -o cmTC_4da18 -rdynamic 
-CMakeFiles/cmTC_4da18.dir/CheckSymbolExists.c.o: In function `main':
+Building C object CMakeFiles/cmTC_de68a.dir/CheckSymbolExists.c.o
+/usr/bin/cc     -o CMakeFiles/cmTC_de68a.dir/CheckSymbolExists.c.o   -c /home/alexander/test_space/build/sim_game/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+Linking C executable cmTC_de68a
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_de68a.dir/link.txt --verbose=1
+/usr/bin/cc       CMakeFiles/cmTC_de68a.dir/CheckSymbolExists.c.o  -o cmTC_de68a -rdynamic 
+CMakeFiles/cmTC_de68a.dir/CheckSymbolExists.c.o: In function `main':
 CheckSymbolExists.c:(.text+0x16): undefined reference to `pthread_create'
 collect2: error: ld returned 1 exit status
-CMakeFiles/cmTC_4da18.dir/build.make:97: recipe for target 'cmTC_4da18' failed
-make[1]: *** [cmTC_4da18] Error 1
+CMakeFiles/cmTC_de68a.dir/build.make:97: recipe for target 'cmTC_de68a' failed
+make[1]: *** [cmTC_de68a] Error 1
 make[1]: Leaving directory '/home/alexander/test_space/build/sim_game/CMakeFiles/CMakeTmp'
-Makefile:126: recipe for target 'cmTC_4da18/fast' failed
-make: *** [cmTC_4da18/fast] Error 2
+Makefile:126: recipe for target 'cmTC_de68a/fast' failed
+make: *** [cmTC_de68a/fast] Error 2
 
 File /home/alexander/test_space/build/sim_game/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
 /* */
@@ -36,20 +36,20 @@ int main(int argc, char** argv)
 Determining if the function pthread_create exists in the pthreads failed with the following output:
 Change Dir: /home/alexander/test_space/build/sim_game/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_81fcd/fast"
-/usr/bin/make -f CMakeFiles/cmTC_81fcd.dir/build.make CMakeFiles/cmTC_81fcd.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_3960c/fast"
+/usr/bin/make -f CMakeFiles/cmTC_3960c.dir/build.make CMakeFiles/cmTC_3960c.dir/build
 make[1]: Entering directory '/home/alexander/test_space/build/sim_game/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_81fcd.dir/CheckFunctionExists.c.o
-/usr/bin/cc    -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_81fcd.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
-Linking C executable cmTC_81fcd
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_81fcd.dir/link.txt --verbose=1
-/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create    CMakeFiles/cmTC_81fcd.dir/CheckFunctionExists.c.o  -o cmTC_81fcd -rdynamic -lpthreads 
+Building C object CMakeFiles/cmTC_3960c.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_3960c.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_3960c
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_3960c.dir/link.txt --verbose=1
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create    CMakeFiles/cmTC_3960c.dir/CheckFunctionExists.c.o  -o cmTC_3960c -rdynamic -lpthreads 
 /usr/bin/ld: cannot find -lpthreads
 collect2: error: ld returned 1 exit status
-CMakeFiles/cmTC_81fcd.dir/build.make:97: recipe for target 'cmTC_81fcd' failed
-make[1]: *** [cmTC_81fcd] Error 1
+CMakeFiles/cmTC_3960c.dir/build.make:97: recipe for target 'cmTC_3960c' failed
+make[1]: *** [cmTC_3960c] Error 1
 make[1]: Leaving directory '/home/alexander/test_space/build/sim_game/CMakeFiles/CMakeTmp'
-Makefile:126: recipe for target 'cmTC_81fcd/fast' failed
-make: *** [cmTC_81fcd/fast] Error 2
+Makefile:126: recipe for target 'cmTC_3960c/fast' failed
+make: *** [cmTC_3960c/fast] Error 2
 
 

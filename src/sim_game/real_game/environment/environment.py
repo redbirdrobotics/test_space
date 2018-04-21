@@ -123,12 +123,12 @@ class Environment(object):
                         rba.collisions['front'] = True
 
             # Perform drone-to-roomba collision detection
-            # if self.agent.is_touching_roomba_top(rba):
-            #     rba.collisions['top'] = True
+            if self.agent.is_touching_roomba_top(rba):
+                rba.collisions['top'] = True
 
-            # if self.agent.is_blocking_roomba(rba):
-            #     if Environment._check_roomba_is_facing(rba, self.agent.xy_pos):
-            #         rba.collisions['front'] = True
+            if self.agent.is_blocking_roomba(rba):
+                if Environment._check_roomba_is_facing(rba, self.agent.xy_pos):
+                    rba.collisions['front'] = True
 
             # Check if the roomba has left the arena
             (has_left, reward) = Environment._check_bounds(rba)

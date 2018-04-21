@@ -33,8 +33,8 @@ def run_demo():
     #     cfg.MISSION_OBSTACLE_SPAWN_RADIUS = args.obstacle_spawn_radius
 
 
-    #import roombasim.pittras.config
-    #cfg.load(roombasim.pittras.config)
+    import real_game.redbird.config
+    cfg.load(real_game.redbird.config)
 
     # setup mission
     environment = Environment()
