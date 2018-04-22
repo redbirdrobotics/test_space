@@ -3,4 +3,4 @@ sim_game.display
 ===========
 '''
 
-from .display import Display
+from .display import Env_Display, Sim_Display

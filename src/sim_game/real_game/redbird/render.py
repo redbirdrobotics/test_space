@@ -3,7 +3,7 @@ from pyglet.gl import *
 import numpy as np
 
 import real_game.config as cfg
-from real_game.display import Display
+from real_game.display import Env_Display
 from real_game import geometry
 
 def render_corvus(drone):
@@ -17,19 +17,19 @@ def render_corvus(drone):
     glColor4f(0.5,0.5,0.5,alpha)
 
     scale = ((1 - alpha) * 3) + 1
-    Display._draw_hollow_square(drone.xy_pos, drone.yaw, cfg.CORVUS_BASE_DIAGONAL * scale)
+    Env_Display._draw_hollow_square(drone.xy_pos, drone.yaw, cfg.CORVUS_BASE_DIAGONAL * scale)
 
     # draw bumpers
     if drone.z_pos <= cfg.CORVUS_PAD_ACTIVIATION_HEIGHT:
         glColor3f(1,0.5,0.5)
     else:
         glColor3f(1,1,1)
-    Display._draw_hollow_square(drone.xy_pos, drone.yaw, cfg.CORVUS_BASE_DIAGONAL)
+    Env_Display._draw_hollow_square(drone.xy_pos, drone.yaw, cfg.CORVUS_BASE_DIAGONAL)
 
     # draw prop guards
     glColor3f(0.8,0.8,0.5)
     for c in geometry.get_square_corners(drone.xy_pos, drone.yaw, cfg.CORVUS_BASE_WIDTH):
-        Display._draw_hollow_circle(c, cfg.CORVUS_PROP_RADIUS)
+        Env_Display._draw_hollow_circle(c, cfg.CORVUS_PROP_RADIUS)
 
     # Direction indicator
     glColor3f(1,1,1)

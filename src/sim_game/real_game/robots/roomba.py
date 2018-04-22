@@ -38,6 +38,7 @@ class Roomba(object):
         self.pos = pos
         self.heading = heading
         self.tag = tag
+        self.detected = False
 
         self.collisions = {
             'front': False,

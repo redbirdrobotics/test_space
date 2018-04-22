@@ -8,6 +8,11 @@ class Corvus(Drone):
     def update(self, delta, elapsed):
         super(Corvus, self).update(delta, elapsed)
 
+    def detects_roomba(self, rba):
+        dist2 = pow((self.xy_pos[0] - rba.pos[0]), 2) + pow((self.xy_pos[1] - rba.pos[1]), 2)
+        dist = np.sqrt(dist2)
+        return dist < cfg.CORVUS_FOV
+
     def is_touching_roomba_top(self, rba):
         '''
         PittRAS drone pad has a diameter of 35cm.
@@ -15,6 +20,7 @@ class Corvus(Drone):
         dist2 = pow((self.xy_pos[0] - rba.pos[0]), 2) + pow((self.xy_pos[1] - rba.pos[1]), 2)
         dist = np.sqrt(dist2)
 
+        # If drone is close to floor and roomba is less than drone footprint return true else false
         return self.z_pos < cfg.CORVUS_PAD_ACTIVIATION_HEIGHT and dist < cfg.CORVUS_PAD_RADIUS
 
     def is_blocking_roomba(self, rba):

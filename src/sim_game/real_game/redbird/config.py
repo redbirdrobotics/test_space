@@ -18,6 +18,9 @@ RENDER_AGENT = render.render_corvus
 # REDBIRD DRONE CONFIGURATION
 #
 
+# the radius of sight for drone
+CORVUS_FOV = 3
+
 # the width of the square bumper base in meters
 CORVUS_BASE_WIDTH = 0.57
 

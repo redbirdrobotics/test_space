@@ -26,6 +26,8 @@ Not searching for unused variables given on the command line.
 [36m--[0m Found gtest: gtests will be built
 [36m--[0m Using Python nosetests: /usr/bin/nosetests-2.7
 [36m--[0m catkin 0.7.11
+[36m--[0m Using these message generators: gencpp;geneus;genlisp;gennodejs;genpy
+[36m--[0m sim_game: 2 messages, 0 services
 [36m--[0m Configuring done
 [36m--[0m Generating done
 [36m--[0m Build files have been written to: /home/alexander/test_space/build/sim_game

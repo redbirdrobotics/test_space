@@ -3,6 +3,6 @@ prefix=/home/alexander/test_space/install
 Name: sim_game
 Description: Description of sim_game
 Version: 0.0.0
-Cflags: 
+Cflags: -I/home/alexander/test_space/install/include
 Libs: -L/home/alexander/test_space/install/lib 
-Requires: 
+Requires: roscpp rospy std_msgs message_runtime

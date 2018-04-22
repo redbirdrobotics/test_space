@@ -11,5 +11,6 @@ export CMAKE_PREFIX_PATH="/home/alexander/test_space/devel/.private/catkin_tools
 export LD_LIBRARY_PATH="/opt/ros/kinetic/lib:/opt/ros/kinetic/lib/x86_64-linux-gnu:/usr/local/cuda-9.0/lib64"
 export PKG_CONFIG_PATH="/opt/ros/kinetic/lib/pkgconfig:/opt/ros/kinetic/lib/x86_64-linux-gnu/pkgconfig"
 export PWD="/home/alexander/test_space/build/catkin_tools_prebuild"
+export PYTHONPATH="/opt/ros/kinetic/lib/python2.7/dist-packages"
 export ROSLISP_PACKAGE_DIRECTORIES="/home/alexander/test_space/devel/.private/catkin_tools_prebuild/share/common-lisp:$ROSLISP_PACKAGE_DIRECTORIES"
 export ROS_PACKAGE_PATH="/home/alexander/test_space/build/catkin_tools_prebuild:$ROS_PACKAGE_PATH"

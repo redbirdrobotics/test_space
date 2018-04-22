@@ -9,7 +9,7 @@ import time
 import pyglet
 
 import real_game.config as cfg
-from real_game.display import Display
+from real_game.display import Env_Display, Sim_Display
 from real_game.environment import Environment
 
 
@@ -38,6 +38,7 @@ def run_demo():
 
     # setup mission
     environment = Environment()
+    environment.make_node()
     environment.reset()
 
     # setup agent
@@ -45,16 +46,18 @@ def run_demo():
     environment.agent = agent
 
     config = pyglet.gl.Config(sample_buffers=1, samples=4)
-    # if args.timescale:
-    #     window = Display(environment, args.timescale)
-    # else:
-    #     window = Display(environment)
-    window = Display(environment)
 
-    def update_func(delta, elapsed):
+    # setup Env_Display
+    env_window = Env_Display(environment)
+
+    # setup Sim_Display
+    #sim_window =Sim_Display(environment)
+
+    def env_update_func(delta, elapsed):
         environment.update(delta, elapsed)
 
-    window.set_update_func(update_func)
+    env_window.set_update_func(env_update_func)
+    #sim_window.set_update_func(sim_update_func)
 
     pyglet.app.run()
 
