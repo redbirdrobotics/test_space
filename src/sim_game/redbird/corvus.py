@@ -1,7 +1,7 @@
 import numpy as np
-from real_game.robots import Drone
-import real_game.config as cfg
-from real_game import geometry
+from robots import Drone
+import config as cfg
+import geometry
 
 class Corvus(Drone):
 

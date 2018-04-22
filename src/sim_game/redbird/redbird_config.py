@@ -1,4 +1,4 @@
-from real_game.redbird import Corvus, render
+from redbird import Corvus, render
 
 import numpy as np
 

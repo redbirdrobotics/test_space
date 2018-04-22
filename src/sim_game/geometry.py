@@ -6,7 +6,7 @@ Utility methods for working in 2D space.
 
 import numpy as np
 
-import real_game.config as cfg
+import config as cfg
 
 PI = cfg.PI
 TAU = cfg.TAU

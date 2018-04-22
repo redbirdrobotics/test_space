@@ -2,9 +2,9 @@
 from pyglet.gl import *
 import numpy as np
 
-import real_game.config as cfg
-from real_game.display import Env_Display
-from real_game import geometry
+import config as cfg
+from display import Env_Display
+import geometry
 
 def render_corvus(drone):
     glEnable(GL_BLEND)

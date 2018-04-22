@@ -4,7 +4,7 @@ drone.py
 Generic Drone implementation
 '''
 import numpy as np
-import real_game.config as cfg
+import config as cfg
 #import OnBoardSim.drone_loc as DroneLoc
 
 class Drone(object):

@@ -4,7 +4,6 @@ config.py
 Contains a bunch of modifiable constants organized by
 module type.
 '''
-#from real_game.redbird import Corvus
 
 import re
 import numpy as np

@@ -8,13 +8,13 @@ CLI interface for various functions.
 import time
 import pyglet
 
-import real_game.config as cfg
-from real_game.display import Env_Display, Sim_Display
-from real_game.environment import Environment
+import config as cfg
+from display import Env_Display, Sim_Display
+from environment import Environment
 
 
-def main():
-        run_demo()
+def main():    
+    run_demo()
 
 def run_demo():
     '''
@@ -33,8 +33,8 @@ def run_demo():
     #     cfg.MISSION_OBSTACLE_SPAWN_RADIUS = args.obstacle_spawn_radius
 
 
-    import real_game.redbird.config
-    cfg.load(real_game.redbird.config)
+    import redbird.redbird_config
+    cfg.load(redbird.redbird_config)
 
     # setup mission
     environment = Environment()
@@ -59,7 +59,9 @@ def run_demo():
     env_window.set_update_func(env_update_func)
     #sim_window.set_update_func(sim_update_func)
 
+    # This function runs until esc pressed
     pyglet.app.run()
+
 
 if __name__ == '__main__':
     main()

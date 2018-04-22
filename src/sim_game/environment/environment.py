@@ -15,10 +15,10 @@ the collision dict.
 import numpy as np
 import rospy
 
-import real_game.config as cfg
-from real_game.robots import roomba #, message_population
-from real_game import geometry
-from real_game.communication import ROSExtension
+import config as cfg
+from robots import roomba #, message_population
+import geometry
+from communication import ROSExtension
 from sim_game.msg import roomba_msg, roombaList_msg
 #from droneFOV import DroneFOV
 

@@ -17,10 +17,10 @@ from pyglet.gl import *
 import numpy as np
 import time
 
-import real_game.config as cfg
+import config as cfg
 
-from real_game.robots import roomba
-from real_game import geometry
+from robots import roomba
+import geometry
 
 class Env_Display(pyglet.window.Window):
 
@@ -74,8 +74,7 @@ class Env_Display(pyglet.window.Window):
         for r in self.environment.roombas:
             if isinstance(r, roomba.TargetRoomba):
                 if self.environment.target_roomba == r.tag:
-                    Env_Display._draw_target_roomba(r,
-                                                self.environment.target_type)
+                    Env_Display._draw_target_roomba(r, self.environment.target_type)
                 else:
                     Env_Display._draw_target_roomba(r)
             else:
@@ -261,7 +260,7 @@ class Env_Display(pyglet.window.Window):
 # Message Based Display, Still needs to be inplemented
 class Sim_Display(pyglet.window.Window):
 
-    def __init__(self, environment, timescale=1.0, self_update=True):
+    def __init__(self, timescale=1.0, self_update=True):
         super(Sim_Display, self).__init__(700,700)
 
         self._timescale = timescale
@@ -315,8 +314,7 @@ class Sim_Display(pyglet.window.Window):
 
             if isinstance(r, roomba.TargetRoomba):
                 if self.environment.target_roomba == r.tag:
-                    Sim_Display._draw_target_roomba(r,
-                                                self.environment.target_type)
+                    Sim_Display._draw_target_roomba(r, self.environment.target_type)
                 else:
                     Sim_Display._draw_target_roomba(r)
             else:
