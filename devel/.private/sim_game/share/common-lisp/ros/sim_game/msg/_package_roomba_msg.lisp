@@ -9,6 +9,10 @@
           Y
           DETECTED-VAL
           DETECTED
+          STATIC_X-VAL
+          STATIC_X
+          STATIC_Y-VAL
+          STATIC_Y
           R-VAL
           R
 ))

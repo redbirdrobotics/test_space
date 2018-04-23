@@ -121,12 +121,12 @@ struct MD5Sum< ::sim_game::roombaList_msg_<ContainerAllocator> >
 {
   static const char* value()
   {
-    return "3241d533defe0b3d361b06117825fe36";
+    return "d463756e2d6323a4bc269f5728fcc07c";
   }
 
   static const char* value(const ::sim_game::roombaList_msg_<ContainerAllocator>&) { return value(); }
-  static const uint64_t static_value1 = 0x3241d533defe0b3dULL;
-  static const uint64_t static_value2 = 0x361b06117825fe36ULL;
+  static const uint64_t static_value1 = 0xd463756e2d6323a4ULL;
+  static const uint64_t static_value2 = 0xbc269f5728fcc07cULL;
 };
 
 template<class ContainerAllocator>
@@ -170,12 +170,14 @@ string frame_id\n\
 MSG: sim_game/roomba_msg\n\
 Header header\n\
 \n\
-int64 id 			#Roomba id\n\
-float64 x			#Roomba x pose\n\
-float64 y 			#Roomba y pose\n\
-\n\
-bool detected		#Roomba detected by drone\n\
-float64 r 			#Roomba probability radius\n\
+int64 id 			# Roomba id\n\
+float64 x			# Roomba x pose\n\
+float64 y 			# Roomba y pose\n\
+ \n\
+bool detected		# Roomba detected by drone\n\
+float64 static_x	# Last known x pose \n\
+float64 static_y 	# Last known y pose\n\
+float64 r 			# Roomba probability radius\n\
 ";
   }
 

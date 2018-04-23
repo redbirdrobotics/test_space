@@ -15,12 +15,11 @@ the collision dict.
 import numpy as np
 import rospy
 
-import config as cfg
-from robots import roomba #, message_population
 import geometry
+import config as cfg
+from robots import roomba
 from communication import ROSExtension
 from sim_game.msg import roomba_msg, roombaList_msg
-#from droneFOV import DroneFOV
 
 class Environment(object):
     
@@ -39,13 +38,10 @@ class Environment(object):
         self.score = 0
         self.target_roomba = None
         self.target_type = None
-        # self.ros_target_roomba = message_population.ROSExtension('On_Board_Simulation')
-        # self.ros_target_roomba.create_target_roomba_publisher()
-        #self.fov = DroneFOV()
 
     def make_node(self):
         self.ros = ROSExtension()
-        self.ros.init_ros_node('Environment_Node')
+        self.ros.init_ros_node('Demo_Node')
         self.ros.create_publisher('roomba_msgs', roombaList_msg)
 
     def reset(self):
@@ -90,12 +86,28 @@ class Environment(object):
             obstacle_roomba = roomba.ObstacleRoomba(
                 [np.cos(theta) * cfg.MISSION_OBSTACLE_SPAWN_RADIUS + 10, np.sin(theta) * cfg.MISSION_OBSTACLE_SPAWN_RADIUS + 10],
                 theta - (cfg.PI / 2),
-                tag=i
+                tag=9+i
             )
 
             obstacle_roomba.start()
 
             self.roombas.append(obstacle_roomba)
+
+    def populate_msg(self):
+        i = 0
+        List_msg = roombaList_msg()
+        for roomba in self.roombas:
+            i += 1
+            msg = roomba_msg()
+            msg.id = i
+            msg.x = roomba.pos[0]
+            msg.y = roomba.pos[1]
+            msg.detected = roomba.detected
+            if msg.detected:
+                msg.static_x = roomba.pos[0]
+                msg.static_y = roomba.pos[1]
+            List_msg.roombaList.append(msg)
+        self.ros.send_msg(List_msg)
 
     def update(self, delta, elapsed):
         '''
@@ -113,22 +125,14 @@ class Environment(object):
 
         grand_count = 0
 
-        rba_msg = [roomba_msg()]*14
-
-        rbaList_msg = roombaList_msg()
-
         # Loop through all roombas
         for i in range(len(self.roombas)):
             rba = self.roombas[i]
 
-            rba_msg[i].id = i
-            rba_msg[i].x = rba.pos[0]
-            rba_msg[i].y = rba.pos[1]
-
             # ignore roombas that left the arena
             if (rba.state == cfg.ROOMBA_STATE_IDLE):
-                rba_msg[i].detected = False
-                rbaList_msg.roombaList.append(rba_msg[i])
+                (rbaList_msg.roombaList[i]).detected = False
+                # rbaList_msg.roombaList.append(rba_msg[i])
                 continue
 
             rba.update(delta, elapsed)
@@ -146,13 +150,8 @@ class Environment(object):
             # Perform FOV detection
             if self.agent.detects_roomba(rba):
                 rba.detected = True
-                rba_msg[i].detected = True
-                rbaList_msg.roombaList.append(rba_msg[i])
             else:
                 rba.detected = False
-                rba_msg[i].detected = False
-                rbaList_msg.roombaList.append(rba_msg[i])
-
 
             # Perform drone-to-roomba collision detection
             if self.agent.is_touching_roomba_top(rba):
@@ -189,7 +188,7 @@ class Environment(object):
 
                 del self.activeRoombas[:]
 
-        self.ros.send_msg(rbaList_msg)
+        self.populate_msg()
 
         # update the drone
         self.agent.update(delta, elapsed)

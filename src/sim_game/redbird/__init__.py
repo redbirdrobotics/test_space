@@ -1,5 +1,5 @@
 '''
-sim_game.redbird
+Space for Redbird Robotics specific code and configuration
 ===========
 '''
 

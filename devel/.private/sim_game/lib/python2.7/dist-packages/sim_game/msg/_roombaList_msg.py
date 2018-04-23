@@ -9,7 +9,7 @@ import sim_game.msg
 import std_msgs.msg
 
 class roombaList_msg(genpy.Message):
-  _md5sum = "3241d533defe0b3d361b06117825fe36"
+  _md5sum = "d463756e2d6323a4bc269f5728fcc07c"
   _type = "sim_game/roombaList_msg"
   _has_header = True #flag to mark the presence of a Header object
   _full_text = """Header header
@@ -37,12 +37,14 @@ string frame_id
 MSG: sim_game/roomba_msg
 Header header
 
-int64 id 			#Roomba id
-float64 x			#Roomba x pose
-float64 y 			#Roomba y pose
-
-bool detected		#Roomba detected by drone
-float64 r 			#Roomba probability radius"""
+int64 id 			# Roomba id
+float64 x			# Roomba x pose
+float64 y 			# Roomba y pose
+ 
+bool detected		# Roomba detected by drone
+float64 static_x	# Last known x pose 
+float64 static_y 	# Last known y pose
+float64 r 			# Roomba probability radius"""
   __slots__ = ['header','roombaList']
   _slot_types = ['std_msgs/Header','sim_game/roomba_msg[]']
 
@@ -106,7 +108,7 @@ float64 r 			#Roomba probability radius"""
           length = len(_x)
         buff.write(struct.pack('<I%ss'%length, length, _x))
         _x = val1
-        buff.write(_get_struct_q2dBd().pack(_x.id, _x.x, _x.y, _x.detected, _x.r))
+        buff.write(_get_struct_q2dB3d().pack(_x.id, _x.x, _x.y, _x.detected, _x.static_x, _x.static_y, _x.r))
     except struct.error as se: self._check_types(struct.error("%s: '%s' when writing '%s'" % (type(se), str(se), str(locals().get('_x', self)))))
     except TypeError as te: self._check_types(ValueError("%s: '%s' when writing '%s'" % (type(te), str(te), str(locals().get('_x', self)))))
 
@@ -160,8 +162,8 @@ float64 r 			#Roomba probability radius"""
           _v3.frame_id = str[start:end]
         _x = val1
         start = end
-        end += 33
-        (_x.id, _x.x, _x.y, _x.detected, _x.r,) = _get_struct_q2dBd().unpack(str[start:end])
+        end += 49
+        (_x.id, _x.x, _x.y, _x.detected, _x.static_x, _x.static_y, _x.r,) = _get_struct_q2dB3d().unpack(str[start:end])
         val1.detected = bool(val1.detected)
         self.roombaList.append(val1)
       return self
@@ -199,7 +201,7 @@ float64 r 			#Roomba probability radius"""
           length = len(_x)
         buff.write(struct.pack('<I%ss'%length, length, _x))
         _x = val1
-        buff.write(_get_struct_q2dBd().pack(_x.id, _x.x, _x.y, _x.detected, _x.r))
+        buff.write(_get_struct_q2dB3d().pack(_x.id, _x.x, _x.y, _x.detected, _x.static_x, _x.static_y, _x.r))
     except struct.error as se: self._check_types(struct.error("%s: '%s' when writing '%s'" % (type(se), str(se), str(locals().get('_x', self)))))
     except TypeError as te: self._check_types(ValueError("%s: '%s' when writing '%s'" % (type(te), str(te), str(locals().get('_x', self)))))
 
@@ -254,8 +256,8 @@ float64 r 			#Roomba probability radius"""
           _v7.frame_id = str[start:end]
         _x = val1
         start = end
-        end += 33
-        (_x.id, _x.x, _x.y, _x.detected, _x.r,) = _get_struct_q2dBd().unpack(str[start:end])
+        end += 49
+        (_x.id, _x.x, _x.y, _x.detected, _x.static_x, _x.static_y, _x.r,) = _get_struct_q2dB3d().unpack(str[start:end])
         val1.detected = bool(val1.detected)
         self.roombaList.append(val1)
       return self
@@ -266,18 +268,18 @@ _struct_I = genpy.struct_I
 def _get_struct_I():
     global _struct_I
     return _struct_I
+_struct_q2dB3d = None
+def _get_struct_q2dB3d():
+    global _struct_q2dB3d
+    if _struct_q2dB3d is None:
+        _struct_q2dB3d = struct.Struct("<q2dB3d")
+    return _struct_q2dB3d
 _struct_3I = None
 def _get_struct_3I():
     global _struct_3I
     if _struct_3I is None:
         _struct_3I = struct.Struct("<3I")
     return _struct_3I
-_struct_q2dBd = None
-def _get_struct_q2dBd():
-    global _struct_q2dBd
-    if _struct_q2dBd is None:
-        _struct_q2dBd = struct.Struct("<q2dBd")
-    return _struct_q2dBd
 _struct_2I = None
 def _get_struct_2I():
     global _struct_2I

@@ -84,7 +84,7 @@ class roombaList_msg {
 
   static md5sum() {
     //Returns md5sum for a message object
-    return '3241d533defe0b3d361b06117825fe36';
+    return 'd463756e2d6323a4bc269f5728fcc07c';
   }
 
   static messageDefinition() {
@@ -115,12 +115,14 @@ class roombaList_msg {
     MSG: sim_game/roomba_msg
     Header header
     
-    int64 id 			#Roomba id
-    float64 x			#Roomba x pose
-    float64 y 			#Roomba y pose
-    
-    bool detected		#Roomba detected by drone
-    float64 r 			#Roomba probability radius
+    int64 id 			# Roomba id
+    float64 x			# Roomba x pose
+    float64 y 			# Roomba y pose
+     
+    bool detected		# Roomba detected by drone
+    float64 static_x	# Last known x pose 
+    float64 static_y 	# Last known y pose
+    float64 r 			# Roomba probability radius
     `;
   }
 

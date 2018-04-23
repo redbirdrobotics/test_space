@@ -24,6 +24,8 @@ class roomba_msg {
       this.x = null;
       this.y = null;
       this.detected = null;
+      this.static_x = null;
+      this.static_y = null;
       this.r = null;
     }
     else {
@@ -57,6 +59,18 @@ class roomba_msg {
       else {
         this.detected = false;
       }
+      if (initObj.hasOwnProperty('static_x')) {
+        this.static_x = initObj.static_x
+      }
+      else {
+        this.static_x = 0.0;
+      }
+      if (initObj.hasOwnProperty('static_y')) {
+        this.static_y = initObj.static_y
+      }
+      else {
+        this.static_y = 0.0;
+      }
       if (initObj.hasOwnProperty('r')) {
         this.r = initObj.r
       }
@@ -78,6 +92,10 @@ class roomba_msg {
     bufferOffset = _serializer.float64(obj.y, buffer, bufferOffset);
     // Serialize message field [detected]
     bufferOffset = _serializer.bool(obj.detected, buffer, bufferOffset);
+    // Serialize message field [static_x]
+    bufferOffset = _serializer.float64(obj.static_x, buffer, bufferOffset);
+    // Serialize message field [static_y]
+    bufferOffset = _serializer.float64(obj.static_y, buffer, bufferOffset);
     // Serialize message field [r]
     bufferOffset = _serializer.float64(obj.r, buffer, bufferOffset);
     return bufferOffset;
@@ -97,6 +115,10 @@ class roomba_msg {
     data.y = _deserializer.float64(buffer, bufferOffset);
     // Deserialize message field [detected]
     data.detected = _deserializer.bool(buffer, bufferOffset);
+    // Deserialize message field [static_x]
+    data.static_x = _deserializer.float64(buffer, bufferOffset);
+    // Deserialize message field [static_y]
+    data.static_y = _deserializer.float64(buffer, bufferOffset);
     // Deserialize message field [r]
     data.r = _deserializer.float64(buffer, bufferOffset);
     return data;
@@ -105,7 +127,7 @@ class roomba_msg {
   static getMessageSize(object) {
     let length = 0;
     length += std_msgs.msg.Header.getMessageSize(object.header);
-    return length + 33;
+    return length + 49;
   }
 
   static datatype() {
@@ -115,7 +137,7 @@ class roomba_msg {
 
   static md5sum() {
     //Returns md5sum for a message object
-    return '85d49906735be78e3facee055f16d425';
+    return 'ff0d2705bf902e1f7a93e5088d820b1d';
   }
 
   static messageDefinition() {
@@ -123,12 +145,14 @@ class roomba_msg {
     return `
     Header header
     
-    int64 id 			#Roomba id
-    float64 x			#Roomba x pose
-    float64 y 			#Roomba y pose
-    
-    bool detected		#Roomba detected by drone
-    float64 r 			#Roomba probability radius
+    int64 id 			# Roomba id
+    float64 x			# Roomba x pose
+    float64 y 			# Roomba y pose
+     
+    bool detected		# Roomba detected by drone
+    float64 static_x	# Last known x pose 
+    float64 static_y 	# Last known y pose
+    float64 r 			# Roomba probability radius
     ================================================================================
     MSG: std_msgs/Header
     # Standard metadata for higher-level stamped data types.
@@ -189,6 +213,20 @@ class roomba_msg {
     }
     else {
       resolved.detected = false
+    }
+
+    if (msg.static_x !== undefined) {
+      resolved.static_x = msg.static_x;
+    }
+    else {
+      resolved.static_x = 0.0
+    }
+
+    if (msg.static_y !== undefined) {
+      resolved.static_y = msg.static_y;
+    }
+    else {
+      resolved.static_y = 0.0
     }
 
     if (msg.r !== undefined) {

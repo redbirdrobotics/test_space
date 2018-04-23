@@ -8,17 +8,19 @@ import struct
 import std_msgs.msg
 
 class roomba_msg(genpy.Message):
-  _md5sum = "85d49906735be78e3facee055f16d425"
+  _md5sum = "ff0d2705bf902e1f7a93e5088d820b1d"
   _type = "sim_game/roomba_msg"
   _has_header = True #flag to mark the presence of a Header object
   _full_text = """Header header
 
-int64 id 			#Roomba id
-float64 x			#Roomba x pose
-float64 y 			#Roomba y pose
-
-bool detected		#Roomba detected by drone
-float64 r 			#Roomba probability radius
+int64 id 			# Roomba id
+float64 x			# Roomba x pose
+float64 y 			# Roomba y pose
+ 
+bool detected		# Roomba detected by drone
+float64 static_x	# Last known x pose 
+float64 static_y 	# Last known y pose
+float64 r 			# Roomba probability radius
 ================================================================================
 MSG: std_msgs/Header
 # Standard metadata for higher-level stamped data types.
@@ -37,8 +39,8 @@ time stamp
 # 1: global frame
 string frame_id
 """
-  __slots__ = ['header','id','x','y','detected','r']
-  _slot_types = ['std_msgs/Header','int64','float64','float64','bool','float64']
+  __slots__ = ['header','id','x','y','detected','static_x','static_y','r']
+  _slot_types = ['std_msgs/Header','int64','float64','float64','bool','float64','float64','float64']
 
   def __init__(self, *args, **kwds):
     """
@@ -48,7 +50,7 @@ string frame_id
     changes.  You cannot mix in-order arguments and keyword arguments.
 
     The available fields are:
-       header,id,x,y,detected,r
+       header,id,x,y,detected,static_x,static_y,r
 
     :param args: complete set of field values, in .msg order
     :param kwds: use keyword arguments corresponding to message field names
@@ -67,6 +69,10 @@ string frame_id
         self.y = 0.
       if self.detected is None:
         self.detected = False
+      if self.static_x is None:
+        self.static_x = 0.
+      if self.static_y is None:
+        self.static_y = 0.
       if self.r is None:
         self.r = 0.
     else:
@@ -75,6 +81,8 @@ string frame_id
       self.x = 0.
       self.y = 0.
       self.detected = False
+      self.static_x = 0.
+      self.static_y = 0.
       self.r = 0.
 
   def _get_types(self):
@@ -98,7 +106,7 @@ string frame_id
         length = len(_x)
       buff.write(struct.pack('<I%ss'%length, length, _x))
       _x = self
-      buff.write(_get_struct_q2dBd().pack(_x.id, _x.x, _x.y, _x.detected, _x.r))
+      buff.write(_get_struct_q2dB3d().pack(_x.id, _x.x, _x.y, _x.detected, _x.static_x, _x.static_y, _x.r))
     except struct.error as se: self._check_types(struct.error("%s: '%s' when writing '%s'" % (type(se), str(se), str(locals().get('_x', self)))))
     except TypeError as te: self._check_types(ValueError("%s: '%s' when writing '%s'" % (type(te), str(te), str(locals().get('_x', self)))))
 
@@ -126,8 +134,8 @@ string frame_id
         self.header.frame_id = str[start:end]
       _x = self
       start = end
-      end += 33
-      (_x.id, _x.x, _x.y, _x.detected, _x.r,) = _get_struct_q2dBd().unpack(str[start:end])
+      end += 49
+      (_x.id, _x.x, _x.y, _x.detected, _x.static_x, _x.static_y, _x.r,) = _get_struct_q2dB3d().unpack(str[start:end])
       self.detected = bool(self.detected)
       return self
     except struct.error as e:
@@ -150,7 +158,7 @@ string frame_id
         length = len(_x)
       buff.write(struct.pack('<I%ss'%length, length, _x))
       _x = self
-      buff.write(_get_struct_q2dBd().pack(_x.id, _x.x, _x.y, _x.detected, _x.r))
+      buff.write(_get_struct_q2dB3d().pack(_x.id, _x.x, _x.y, _x.detected, _x.static_x, _x.static_y, _x.r))
     except struct.error as se: self._check_types(struct.error("%s: '%s' when writing '%s'" % (type(se), str(se), str(locals().get('_x', self)))))
     except TypeError as te: self._check_types(ValueError("%s: '%s' when writing '%s'" % (type(te), str(te), str(locals().get('_x', self)))))
 
@@ -179,8 +187,8 @@ string frame_id
         self.header.frame_id = str[start:end]
       _x = self
       start = end
-      end += 33
-      (_x.id, _x.x, _x.y, _x.detected, _x.r,) = _get_struct_q2dBd().unpack(str[start:end])
+      end += 49
+      (_x.id, _x.x, _x.y, _x.detected, _x.static_x, _x.static_y, _x.r,) = _get_struct_q2dB3d().unpack(str[start:end])
       self.detected = bool(self.detected)
       return self
     except struct.error as e:
@@ -190,15 +198,15 @@ _struct_I = genpy.struct_I
 def _get_struct_I():
     global _struct_I
     return _struct_I
+_struct_q2dB3d = None
+def _get_struct_q2dB3d():
+    global _struct_q2dB3d
+    if _struct_q2dB3d is None:
+        _struct_q2dB3d = struct.Struct("<q2dB3d")
+    return _struct_q2dB3d
 _struct_3I = None
 def _get_struct_3I():
     global _struct_3I
     if _struct_3I is None:
         _struct_3I = struct.Struct("<3I")
     return _struct_3I
-_struct_q2dBd = None
-def _get_struct_q2dBd():
-    global _struct_q2dBd
-    if _struct_q2dBd is None:
-        _struct_q2dBd = struct.Struct("<q2dBd")
-    return _struct_q2dBd

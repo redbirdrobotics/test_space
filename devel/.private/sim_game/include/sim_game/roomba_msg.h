@@ -30,6 +30,8 @@ struct roomba_msg_
     , x(0.0)
     , y(0.0)
     , detected(false)
+    , static_x(0.0)
+    , static_y(0.0)
     , r(0.0)  {
     }
   roomba_msg_(const ContainerAllocator& _alloc)
@@ -38,6 +40,8 @@ struct roomba_msg_
     , x(0.0)
     , y(0.0)
     , detected(false)
+    , static_x(0.0)
+    , static_y(0.0)
     , r(0.0)  {
   (void)_alloc;
     }
@@ -58,6 +62,12 @@ struct roomba_msg_
 
    typedef uint8_t _detected_type;
   _detected_type detected;
+
+   typedef double _static_x_type;
+  _static_x_type static_x;
+
+   typedef double _static_y_type;
+  _static_y_type static_y;
 
    typedef double _r_type;
   _r_type r;
@@ -140,12 +150,12 @@ struct MD5Sum< ::sim_game::roomba_msg_<ContainerAllocator> >
 {
   static const char* value()
   {
-    return "85d49906735be78e3facee055f16d425";
+    return "ff0d2705bf902e1f7a93e5088d820b1d";
   }
 
   static const char* value(const ::sim_game::roomba_msg_<ContainerAllocator>&) { return value(); }
-  static const uint64_t static_value1 = 0x85d49906735be78eULL;
-  static const uint64_t static_value2 = 0x3facee055f16d425ULL;
+  static const uint64_t static_value1 = 0xff0d2705bf902e1fULL;
+  static const uint64_t static_value2 = 0x7a93e5088d820b1dULL;
 };
 
 template<class ContainerAllocator>
@@ -166,12 +176,14 @@ struct Definition< ::sim_game::roomba_msg_<ContainerAllocator> >
   {
     return "Header header\n\
 \n\
-int64 id 			#Roomba id\n\
-float64 x			#Roomba x pose\n\
-float64 y 			#Roomba y pose\n\
-\n\
-bool detected		#Roomba detected by drone\n\
-float64 r 			#Roomba probability radius\n\
+int64 id 			# Roomba id\n\
+float64 x			# Roomba x pose\n\
+float64 y 			# Roomba y pose\n\
+ \n\
+bool detected		# Roomba detected by drone\n\
+float64 static_x	# Last known x pose \n\
+float64 static_y 	# Last known y pose\n\
+float64 r 			# Roomba probability radius\n\
 ================================================================================\n\
 MSG: std_msgs/Header\n\
 # Standard metadata for higher-level stamped data types.\n\
@@ -212,6 +224,8 @@ namespace serialization
       stream.next(m.x);
       stream.next(m.y);
       stream.next(m.detected);
+      stream.next(m.static_x);
+      stream.next(m.static_y);
       stream.next(m.r);
     }
 
@@ -242,6 +256,10 @@ struct Printer< ::sim_game::roomba_msg_<ContainerAllocator> >
     Printer<double>::stream(s, indent + "  ", v.y);
     s << indent << "detected: ";
     Printer<uint8_t>::stream(s, indent + "  ", v.detected);
+    s << indent << "static_x: ";
+    Printer<double>::stream(s, indent + "  ", v.static_x);
+    s << indent << "static_y: ";
+    Printer<double>::stream(s, indent + "  ", v.static_y);
     s << indent << "r: ";
     Printer<double>::stream(s, indent + "  ", v.r);
   }

@@ -78,7 +78,7 @@
    self)
   )
 
-(setf (get sim_game::roombaList_msg :md5sum-) "3241d533defe0b3d361b06117825fe36")
+(setf (get sim_game::roombaList_msg :md5sum-) "d463756e2d6323a4bc269f5728fcc07c")
 (setf (get sim_game::roombaList_msg :datatype-) "sim_game/roombaList_msg")
 (setf (get sim_game::roombaList_msg :definition-)
       "Header header
@@ -106,16 +106,18 @@ string frame_id
 MSG: sim_game/roomba_msg
 Header header
 
-int64 id 			#Roomba id
-float64 x			#Roomba x pose
-float64 y 			#Roomba y pose
-
-bool detected		#Roomba detected by drone
-float64 r 			#Roomba probability radius
+int64 id 			# Roomba id
+float64 x			# Roomba x pose
+float64 y 			# Roomba y pose
+ 
+bool detected		# Roomba detected by drone
+float64 static_x	# Last known x pose 
+float64 static_y 	# Last known y pose
+float64 r 			# Roomba probability radius
 ")
 
 
 
-(provide :sim_game/roombaList_msg "3241d533defe0b3d361b06117825fe36")
+(provide :sim_game/roombaList_msg "d463756e2d6323a4bc269f5728fcc07c")
 
 

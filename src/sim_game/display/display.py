@@ -18,7 +18,6 @@ import numpy as np
 import time
 
 import config as cfg
-
 from robots import roomba
 import geometry
 
@@ -257,10 +256,19 @@ class Env_Display(pyglet.window.Window):
         glEnd()
 
 
-# Message Based Display, Still needs to be inplemented
+# Note: Message Based Display, Still needs to be inplemented
+#
+# Note: there should be a more general Display
+#   Sim_Display and Env_Display are children of display
+#
+# Note: to stay general Display should have a subject (self.subject
+#   Display is the medium
+#   Robots are the paint
+#   Subject decides where to put what
+
 class Sim_Display(pyglet.window.Window):
 
-    def __init__(self, timescale=1.0, self_update=True):
+    def __init__(self, Sim_Node, timescale=1.0, self_update=True):
         super(Sim_Display, self).__init__(700,700)
 
         self._timescale = timescale
@@ -268,24 +276,25 @@ class Sim_Display(pyglet.window.Window):
         self._click_callback = (lambda a,b:None)
         self._paused = False
         self._elapsed = 0.0
+        self.stupid = False
 
         if self_update:
             pyglet.clock.schedule_interval(self._update, 1.0/self._timescale/60.0)
             pyglet.clock.set_fps_limit(self._timescale*60)
 
-        self.environment = environment
         self.start_time = time.time()
+
+        self.subject = Sim_Node
+        self.roombaList_msg = None
 
     def set_click_callback(self, callback):
         self._click_callback = callback
 
-    def set_update_func(self, update_func):
-        self.update_func = update_func
-
     def _update(self, dt):
         if not self._paused:
-            self._elapsed += dt * 1000
-            self.update_func(self._timescale*dt, self._timescale*self._elapsed)
+            #self.stupid = True
+            # self._elapsed += dt * 1000
+            self.subject.roomba_topic = self.subject.get_roomba_data()
 
     def on_resize(self, width, height):
         glViewport(10, 10, width-20, height-20)
@@ -296,38 +305,43 @@ class Sim_Display(pyglet.window.Window):
         # glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         glEnable( GL_BLEND );
 
+# BEGIN EDIT
+
     def on_draw(self):
+
         pyglet.clock.tick()
         glClear(GL_COLOR_BUFFER_BIT)
 
         Sim_Display._draw_gridlines()
 
-        self._draw_header(self.environment.good_exits,
-                          self.environment.bad_exits,
-                          self.environment.score,
-                          int(self._elapsed / 1000))
+        self._draw_header(self.subject.headerArgs,
+                          self.subject.headerLabels)
 
-        for r in self.environment.roombas:
+        if (len(self.subject.roomba_topic.roombaList) == 0):
+            print('msg empty')
+            return
 
-            if not r.detected:
+        for roomba in self.subject.roomba_topic.roombaList:
+            if not roomba.detected:
                 continue
 
-            if isinstance(r, roomba.TargetRoomba):
-                if self.environment.target_roomba == r.tag:
-                    Sim_Display._draw_target_roomba(r, self.environment.target_type)
-                else:
-                    Sim_Display._draw_target_roomba(r)
+            if roomba.id < 9:
+                Sim_Display._draw_target_roomba(roomba)
             else:
-                Sim_Display._draw_obstacle_roomba(r)
+                Sim_Display._draw_obstacle_roomba(roomba)
 
-        Sim_Display._draw_drone(self.environment.agent)
+        Sim_Display._draw_drone(self.subject.agent)
 
     def on_mouse_release(self, x, y, button, modifiers):
         x = (x - 10) * 20.0 / (self.get_size()[0] - 20.0)
         y = (y - 10) * 20.0 / (self.get_size()[1] - 20.0)
-        for r in self.environment.roombas:
-            if isinstance(r, roomba.TargetRoomba):
-                if np.hypot(x - r.pos[0], y - r.pos[1]) < cfg.ROOMBA_RADIUS:
+
+        if self.roombaList_msg == None:
+            return
+
+        for roomba in self.roombaList_msg:
+            if roomba.id < 9:
+                if np.hypot(x - roomba.x, y - roomba.y) < cfg.ROOMBA_RADIUS:
                     self._click_callback(r,
                                          'left'
                                          if button == pyglet.window.mouse.LEFT
@@ -345,8 +359,8 @@ class Sim_Display(pyglet.window.Window):
 
     @staticmethod
     def _draw_target_roomba(r, special_state=None):
-        pos = r.pos
-        heading = r.heading
+        pos = (r.x, r.y)
+        #heading = r.heading
         vertex_count = cfg.GRAPHICS_CIRCLE_VERTICES
         radius = cfg.ROOMBA_RADIUS
 
@@ -355,16 +369,16 @@ class Sim_Display(pyglet.window.Window):
         glHint(GL_LINE_SMOOTH_HINT,GL_NICEST)
 
         # Outline
-        if special_state == 'hitting':
-            glColor3f(0.7, 0.7, 1.0)
-        elif special_state == 'blocking':
-            glColor3f(0.7, 1.0, 0.7)
-        elif r.state == cfg.ROOMBA_STATE_FORWARD:
-            glColor3f(1,1,1)
-        elif r.state in (cfg.ROOMBA_STATE_TURNING_NOISE,
-                         cfg.ROOMBA_STATE_REVERSING,
-                         cfg.ROOMBA_STATE_TOUCHED):
-            glColor3f(1,0.8,0.8)
+        # if special_state == 'hitting':
+        #     glColor3f(0.7, 0.7, 1.0)
+        # elif special_state == 'blocking':
+        #     glColor3f(0.7, 1.0, 0.7)
+        # elif r.state == cfg.ROOMBA_STATE_FORWARD:
+        #     glColor3f(1,1,1)
+        # elif r.state in (cfg.ROOMBA_STATE_TURNING_NOISE,
+        #                  cfg.ROOMBA_STATE_REVERSING,
+        #                  cfg.ROOMBA_STATE_TOUCHED):
+        #     glColor3f(1,0.8,0.8)
 
         Sim_Display._draw_hollow_circle(pos, radius)
 
@@ -372,14 +386,14 @@ class Sim_Display(pyglet.window.Window):
         glBegin(GL_LINES)
 
         glVertex2f(pos[0], pos[1])
-        glVertex2f(np.cos(heading) * radius + pos[0], np.sin(heading) * radius + pos[1])
+        #glVertex2f(np.cos(heading) * radius + pos[0], np.sin(heading) * radius + pos[1])
 
         glEnd()
 
     @staticmethod
     def _draw_obstacle_roomba(r):
-        pos = r.pos
-        heading = r.heading
+        pos = (r.x, r.y)
+        #heading = r.heading
         vertex_count = cfg.GRAPHICS_CIRCLE_VERTICES
         radius = cfg.ROOMBA_RADIUS
 
@@ -388,10 +402,10 @@ class Sim_Display(pyglet.window.Window):
         glHint(GL_LINE_SMOOTH_HINT,GL_NICEST)
 
         # Outline
-        if r.state == cfg.ROOMBA_STATE_FORWARD or True:
-            glColor3f(1,0.2,0.2)
-        elif r.state == cfg.ROOMBA_STATE_TURNING:
-            glColor3f(1,0.8,0.8)
+        # if r.state == cfg.ROOMBA_STATE_FORWARD or True:
+        #     glColor3f(1,0.2,0.2)
+        # elif r.state == cfg.ROOMBA_STATE_TURNING:
+        #     glColor3f(1,0.8,0.8)
 
         Sim_Display._draw_hollow_circle(pos, radius)
 
@@ -399,25 +413,28 @@ class Sim_Display(pyglet.window.Window):
         glBegin(GL_LINES)
 
         glVertex2f(pos[0], pos[1])
-        glVertex2f(np.cos(heading) * radius + pos[0], np.sin(heading) * radius + pos[1])
+        # glVertex2f(np.cos(heading) * radius + pos[0], np.sin(heading) * radius + pos[1])
 
         glEnd()
 
     @staticmethod
-    def _draw_drone(drone):
+    def _draw_drone(drone=None):
         if cfg.RENDER_AGENT != None:
             cfg.RENDER_AGENT(drone)
+        else:
+            cfg.RENDER_AGENT()
 
-    def _draw_header(self, good, bad, score, elapsed_secs):
-        mins = elapsed_secs // 60
-        secs = elapsed_secs % 60
+    def _draw_header(self, values, labels):
+        # mins = elapsed_secs // 60
+        # secs = elapsed_secs % 60
         self.set_caption(
-            'Time: %02d:%02d  Good exits: %d   Bad exits: %d   Score: %d'%(
-                mins,
-                secs,
-                good,
-                bad,
-                score))
+            '%s %d %s %d %s %d'%(
+                labels[0],
+                values[0],
+                labels[1],
+                values[1],
+                labels[2],
+                values[2]))
 
     @staticmethod
     def _draw_gridlines():
