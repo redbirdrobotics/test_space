@@ -276,7 +276,7 @@ class Sim_Display(pyglet.window.Window):
         self._click_callback = (lambda a,b:None)
         self._paused = False
         self._elapsed = 0.0
-        self.stupid = False
+        self.delta = None
 
         if self_update:
             pyglet.clock.schedule_interval(self._update, 1.0/self._timescale/60.0)
@@ -292,9 +292,8 @@ class Sim_Display(pyglet.window.Window):
 
     def _update(self, dt):
         if not self._paused:
-            #self.stupid = True
-            # self._elapsed += dt * 1000
             self.subject.roomba_topic = self.subject.get_roomba_data()
+            self.delta = self.subject.get_delta()
 
     def on_resize(self, width, height):
         glViewport(10, 10, width-20, height-20)
@@ -323,10 +322,13 @@ class Sim_Display(pyglet.window.Window):
 
         for roomba in self.subject.roomba_topic.roombaList:
             if not roomba.detected:
+                XYR = self.get_XYR(roomba)
+                Sim_Display._draw_probability_radius(roomba, XYR, self.delta)
                 continue
 
             if roomba.id < 9:
-                Sim_Display._draw_target_roomba(roomba)
+                XYR = self.get_XYR(roomba)
+                Sim_Display._draw_probability_radius(roomba, XYR, self.delta)
             else:
                 Sim_Display._draw_obstacle_roomba(roomba)
 
@@ -356,6 +358,20 @@ class Sim_Display(pyglet.window.Window):
     def on_key_release(self, symbol, modifiers):
         if symbol == pyglet.window.key.SPACE:
             self._paused = not self._paused
+
+    def get_XYR(self, roomba):
+        return self.subject.XYR[roomba.id - 1]
+
+    @staticmethod
+    def _draw_probability_radius(r, XYR, delta):
+        print(XYR)
+        #vertex_count = cfg.GRAPHICS_CIRCLE_VERTICES
+        if (XYR[0] != 0 and XYR[1] != 0):
+            if( XYR[2] >= cfg.ROOMBA_MAX_RADIUS):
+                XYR = (0,0,0)
+            else:
+                radius = XYR[2] + cfg.ROOMBA_LINEAR_SPEED * delta
+                Sim_Display._draw_hollow_circle((XYR[0],XYR[1]),radius)
 
     @staticmethod
     def _draw_target_roomba(r, special_state=None):

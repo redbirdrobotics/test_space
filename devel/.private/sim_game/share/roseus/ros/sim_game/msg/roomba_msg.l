@@ -16,7 +16,7 @@
 
 (defclass sim_game::roomba_msg
   :super ros::object
-  :slots (_header _id _x _y _detected _static_x _static_y _r ))
+  :slots (_header _id _x _y _removed _detected _static_x _static_y _r ))
 
 (defmethod sim_game::roomba_msg
   (:init
@@ -25,6 +25,7 @@
     ((:id __id) 0)
     ((:x __x) 0.0)
     ((:y __y) 0.0)
+    ((:removed __removed) nil)
     ((:detected __detected) nil)
     ((:static_x __static_x) 0.0)
     ((:static_y __static_y) 0.0)
@@ -35,6 +36,7 @@
    (setq _id (round __id))
    (setq _x (float __x))
    (setq _y (float __y))
+   (setq _removed __removed)
    (setq _detected __detected)
    (setq _static_x (float __static_x))
    (setq _static_y (float __static_y))
@@ -56,6 +58,9 @@
   (:y
    (&optional __y)
    (if __y (setq _y __y)) _y)
+  (:removed
+   (&optional __removed)
+   (if __removed (setq _removed __removed)) _removed)
   (:detected
    (&optional __detected)
    (if __detected (setq _detected __detected)) _detected)
@@ -79,6 +84,8 @@
     8
     ;; float64 _y
     8
+    ;; bool _removed
+    1
     ;; bool _detected
     1
     ;; float64 _static_x
@@ -110,6 +117,8 @@
        (sys::poke _x (send s :buffer) (send s :count) :double) (incf (stream-count s) 8)
      ;; float64 _y
        (sys::poke _y (send s :buffer) (send s :count) :double) (incf (stream-count s) 8)
+     ;; bool _removed
+       (if _removed (write-byte -1 s) (write-byte 0 s))
      ;; bool _detected
        (if _detected (write-byte -1 s) (write-byte 0 s))
      ;; float64 _static_x
@@ -140,6 +149,8 @@
      (setq _x (sys::peek buf ptr- :double)) (incf ptr- 8)
    ;; float64 _y
      (setq _y (sys::peek buf ptr- :double)) (incf ptr- 8)
+   ;; bool _removed
+     (setq _removed (not (= 0 (sys::peek buf ptr- :char)))) (incf ptr- 1)
    ;; bool _detected
      (setq _detected (not (= 0 (sys::peek buf ptr- :char)))) (incf ptr- 1)
    ;; float64 _static_x
@@ -152,7 +163,7 @@
    self)
   )
 
-(setf (get sim_game::roomba_msg :md5sum-) "ff0d2705bf902e1f7a93e5088d820b1d")
+(setf (get sim_game::roomba_msg :md5sum-) "63fa31bbe183fb576960c616db4b2bac")
 (setf (get sim_game::roomba_msg :datatype-) "sim_game/roomba_msg")
 (setf (get sim_game::roomba_msg :definition-)
       "Header header
@@ -160,6 +171,7 @@
 int64 id 			# Roomba id
 float64 x			# Roomba x pose
 float64 y 			# Roomba y pose
+bool removed		# Roomba removed
  
 bool detected		# Roomba detected by drone
 float64 static_x	# Last known x pose 
@@ -187,6 +199,6 @@ string frame_id
 
 
 
-(provide :sim_game/roomba_msg "ff0d2705bf902e1f7a93e5088d820b1d")
+(provide :sim_game/roomba_msg "63fa31bbe183fb576960c616db4b2bac")
 
 

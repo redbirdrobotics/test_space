@@ -23,6 +23,7 @@ class roomba_msg {
       this.id = null;
       this.x = null;
       this.y = null;
+      this.removed = null;
       this.detected = null;
       this.static_x = null;
       this.static_y = null;
@@ -52,6 +53,12 @@ class roomba_msg {
       }
       else {
         this.y = 0.0;
+      }
+      if (initObj.hasOwnProperty('removed')) {
+        this.removed = initObj.removed
+      }
+      else {
+        this.removed = false;
       }
       if (initObj.hasOwnProperty('detected')) {
         this.detected = initObj.detected
@@ -90,6 +97,8 @@ class roomba_msg {
     bufferOffset = _serializer.float64(obj.x, buffer, bufferOffset);
     // Serialize message field [y]
     bufferOffset = _serializer.float64(obj.y, buffer, bufferOffset);
+    // Serialize message field [removed]
+    bufferOffset = _serializer.bool(obj.removed, buffer, bufferOffset);
     // Serialize message field [detected]
     bufferOffset = _serializer.bool(obj.detected, buffer, bufferOffset);
     // Serialize message field [static_x]
@@ -113,6 +122,8 @@ class roomba_msg {
     data.x = _deserializer.float64(buffer, bufferOffset);
     // Deserialize message field [y]
     data.y = _deserializer.float64(buffer, bufferOffset);
+    // Deserialize message field [removed]
+    data.removed = _deserializer.bool(buffer, bufferOffset);
     // Deserialize message field [detected]
     data.detected = _deserializer.bool(buffer, bufferOffset);
     // Deserialize message field [static_x]
@@ -127,7 +138,7 @@ class roomba_msg {
   static getMessageSize(object) {
     let length = 0;
     length += std_msgs.msg.Header.getMessageSize(object.header);
-    return length + 49;
+    return length + 50;
   }
 
   static datatype() {
@@ -137,7 +148,7 @@ class roomba_msg {
 
   static md5sum() {
     //Returns md5sum for a message object
-    return 'ff0d2705bf902e1f7a93e5088d820b1d';
+    return '63fa31bbe183fb576960c616db4b2bac';
   }
 
   static messageDefinition() {
@@ -148,6 +159,7 @@ class roomba_msg {
     int64 id 			# Roomba id
     float64 x			# Roomba x pose
     float64 y 			# Roomba y pose
+    bool removed		# Roomba removed
      
     bool detected		# Roomba detected by drone
     float64 static_x	# Last known x pose 
@@ -206,6 +218,13 @@ class roomba_msg {
     }
     else {
       resolved.y = 0.0
+    }
+
+    if (msg.removed !== undefined) {
+      resolved.removed = msg.removed;
+    }
+    else {
+      resolved.removed = false
     }
 
     if (msg.detected !== undefined) {

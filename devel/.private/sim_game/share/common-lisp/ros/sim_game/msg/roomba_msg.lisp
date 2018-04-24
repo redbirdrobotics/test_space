@@ -27,6 +27,11 @@
     :initarg :y
     :type cl:float
     :initform 0.0)
+   (removed
+    :reader removed
+    :initarg :removed
+    :type cl:boolean
+    :initform cl:nil)
    (detected
     :reader detected
     :initarg :detected
@@ -76,6 +81,11 @@
 (cl:defmethod y-val ((m <roomba_msg>))
   (roslisp-msg-protocol:msg-deprecation-warning "Using old-style slot reader sim_game-msg:y-val is deprecated.  Use sim_game-msg:y instead.")
   (y m))
+
+(cl:ensure-generic-function 'removed-val :lambda-list '(m))
+(cl:defmethod removed-val ((m <roomba_msg>))
+  (roslisp-msg-protocol:msg-deprecation-warning "Using old-style slot reader sim_game-msg:removed-val is deprecated.  Use sim_game-msg:removed instead.")
+  (removed m))
 
 (cl:ensure-generic-function 'detected-val :lambda-list '(m))
 (cl:defmethod detected-val ((m <roomba_msg>))
@@ -127,6 +137,7 @@
     (cl:write-byte (cl:ldb (cl:byte 8 40) bits) ostream)
     (cl:write-byte (cl:ldb (cl:byte 8 48) bits) ostream)
     (cl:write-byte (cl:ldb (cl:byte 8 56) bits) ostream))
+  (cl:write-byte (cl:ldb (cl:byte 8 0) (cl:if (cl:slot-value msg 'removed) 1 0)) ostream)
   (cl:write-byte (cl:ldb (cl:byte 8 0) (cl:if (cl:slot-value msg 'detected) 1 0)) ostream)
   (cl:let ((bits (roslisp-utils:encode-double-float-bits (cl:slot-value msg 'static_x))))
     (cl:write-byte (cl:ldb (cl:byte 8 0) bits) ostream)
@@ -189,6 +200,7 @@
       (cl:setf (cl:ldb (cl:byte 8 48) bits) (cl:read-byte istream))
       (cl:setf (cl:ldb (cl:byte 8 56) bits) (cl:read-byte istream))
     (cl:setf (cl:slot-value msg 'y) (roslisp-utils:decode-double-float-bits bits)))
+    (cl:setf (cl:slot-value msg 'removed) (cl:not (cl:zerop (cl:read-byte istream))))
     (cl:setf (cl:slot-value msg 'detected) (cl:not (cl:zerop (cl:read-byte istream))))
     (cl:let ((bits 0))
       (cl:setf (cl:ldb (cl:byte 8 0) bits) (cl:read-byte istream))
@@ -230,22 +242,23 @@
   "sim_game/roomba_msg")
 (cl:defmethod roslisp-msg-protocol:md5sum ((type (cl:eql '<roomba_msg>)))
   "Returns md5sum for a message object of type '<roomba_msg>"
-  "ff0d2705bf902e1f7a93e5088d820b1d")
+  "63fa31bbe183fb576960c616db4b2bac")
 (cl:defmethod roslisp-msg-protocol:md5sum ((type (cl:eql 'roomba_msg)))
   "Returns md5sum for a message object of type 'roomba_msg"
-  "ff0d2705bf902e1f7a93e5088d820b1d")
+  "63fa31bbe183fb576960c616db4b2bac")
 (cl:defmethod roslisp-msg-protocol:message-definition ((type (cl:eql '<roomba_msg>)))
   "Returns full string definition for message of type '<roomba_msg>"
-  (cl:format cl:nil "Header header~%~%int64 id 			# Roomba id~%float64 x			# Roomba x pose~%float64 y 			# Roomba y pose~% ~%bool detected		# Roomba detected by drone~%float64 static_x	# Last known x pose ~%float64 static_y 	# Last known y pose~%float64 r 			# Roomba probability radius~%================================================================================~%MSG: std_msgs/Header~%# Standard metadata for higher-level stamped data types.~%# This is generally used to communicate timestamped data ~%# in a particular coordinate frame.~%# ~%# sequence ID: consecutively increasing ID ~%uint32 seq~%#Two-integer timestamp that is expressed as:~%# * stamp.sec: seconds (stamp_secs) since epoch (in Python the variable is called 'secs')~%# * stamp.nsec: nanoseconds since stamp_secs (in Python the variable is called 'nsecs')~%# time-handling sugar is provided by the client library~%time stamp~%#Frame this data is associated with~%# 0: no frame~%# 1: global frame~%string frame_id~%~%~%"))
+  (cl:format cl:nil "Header header~%~%int64 id 			# Roomba id~%float64 x			# Roomba x pose~%float64 y 			# Roomba y pose~%bool removed		# Roomba removed~% ~%bool detected		# Roomba detected by drone~%float64 static_x	# Last known x pose ~%float64 static_y 	# Last known y pose~%float64 r 			# Roomba probability radius~%================================================================================~%MSG: std_msgs/Header~%# Standard metadata for higher-level stamped data types.~%# This is generally used to communicate timestamped data ~%# in a particular coordinate frame.~%# ~%# sequence ID: consecutively increasing ID ~%uint32 seq~%#Two-integer timestamp that is expressed as:~%# * stamp.sec: seconds (stamp_secs) since epoch (in Python the variable is called 'secs')~%# * stamp.nsec: nanoseconds since stamp_secs (in Python the variable is called 'nsecs')~%# time-handling sugar is provided by the client library~%time stamp~%#Frame this data is associated with~%# 0: no frame~%# 1: global frame~%string frame_id~%~%~%"))
 (cl:defmethod roslisp-msg-protocol:message-definition ((type (cl:eql 'roomba_msg)))
   "Returns full string definition for message of type 'roomba_msg"
-  (cl:format cl:nil "Header header~%~%int64 id 			# Roomba id~%float64 x			# Roomba x pose~%float64 y 			# Roomba y pose~% ~%bool detected		# Roomba detected by drone~%float64 static_x	# Last known x pose ~%float64 static_y 	# Last known y pose~%float64 r 			# Roomba probability radius~%================================================================================~%MSG: std_msgs/Header~%# Standard metadata for higher-level stamped data types.~%# This is generally used to communicate timestamped data ~%# in a particular coordinate frame.~%# ~%# sequence ID: consecutively increasing ID ~%uint32 seq~%#Two-integer timestamp that is expressed as:~%# * stamp.sec: seconds (stamp_secs) since epoch (in Python the variable is called 'secs')~%# * stamp.nsec: nanoseconds since stamp_secs (in Python the variable is called 'nsecs')~%# time-handling sugar is provided by the client library~%time stamp~%#Frame this data is associated with~%# 0: no frame~%# 1: global frame~%string frame_id~%~%~%"))
+  (cl:format cl:nil "Header header~%~%int64 id 			# Roomba id~%float64 x			# Roomba x pose~%float64 y 			# Roomba y pose~%bool removed		# Roomba removed~% ~%bool detected		# Roomba detected by drone~%float64 static_x	# Last known x pose ~%float64 static_y 	# Last known y pose~%float64 r 			# Roomba probability radius~%================================================================================~%MSG: std_msgs/Header~%# Standard metadata for higher-level stamped data types.~%# This is generally used to communicate timestamped data ~%# in a particular coordinate frame.~%# ~%# sequence ID: consecutively increasing ID ~%uint32 seq~%#Two-integer timestamp that is expressed as:~%# * stamp.sec: seconds (stamp_secs) since epoch (in Python the variable is called 'secs')~%# * stamp.nsec: nanoseconds since stamp_secs (in Python the variable is called 'nsecs')~%# time-handling sugar is provided by the client library~%time stamp~%#Frame this data is associated with~%# 0: no frame~%# 1: global frame~%string frame_id~%~%~%"))
 (cl:defmethod roslisp-msg-protocol:serialization-length ((msg <roomba_msg>))
   (cl:+ 0
      (roslisp-msg-protocol:serialization-length (cl:slot-value msg 'header))
      8
      8
      8
+     1
      1
      8
      8
@@ -258,6 +271,7 @@
     (cl:cons ':id (id msg))
     (cl:cons ':x (x msg))
     (cl:cons ':y (y msg))
+    (cl:cons ':removed (removed msg))
     (cl:cons ':detected (detected msg))
     (cl:cons ':static_x (static_x msg))
     (cl:cons ':static_y (static_y msg))

@@ -9,12 +9,13 @@ import sim_game.msg
 import std_msgs.msg
 
 class roombaList_msg(genpy.Message):
-  _md5sum = "d463756e2d6323a4bc269f5728fcc07c"
+  _md5sum = "370246b649b0531a1f6b86644b0b7197"
   _type = "sim_game/roombaList_msg"
   _has_header = True #flag to mark the presence of a Header object
   _full_text = """Header header
 
 roomba_msg[] roombaList
+float64 delta 
 ================================================================================
 MSG: std_msgs/Header
 # Standard metadata for higher-level stamped data types.
@@ -40,13 +41,14 @@ Header header
 int64 id 			# Roomba id
 float64 x			# Roomba x pose
 float64 y 			# Roomba y pose
+bool removed		# Roomba removed
  
 bool detected		# Roomba detected by drone
 float64 static_x	# Last known x pose 
 float64 static_y 	# Last known y pose
 float64 r 			# Roomba probability radius"""
-  __slots__ = ['header','roombaList']
-  _slot_types = ['std_msgs/Header','sim_game/roomba_msg[]']
+  __slots__ = ['header','roombaList','delta']
+  _slot_types = ['std_msgs/Header','sim_game/roomba_msg[]','float64']
 
   def __init__(self, *args, **kwds):
     """
@@ -56,7 +58,7 @@ float64 r 			# Roomba probability radius"""
     changes.  You cannot mix in-order arguments and keyword arguments.
 
     The available fields are:
-       header,roombaList
+       header,roombaList,delta
 
     :param args: complete set of field values, in .msg order
     :param kwds: use keyword arguments corresponding to message field names
@@ -69,9 +71,12 @@ float64 r 			# Roomba probability radius"""
         self.header = std_msgs.msg.Header()
       if self.roombaList is None:
         self.roombaList = []
+      if self.delta is None:
+        self.delta = 0.
     else:
       self.header = std_msgs.msg.Header()
       self.roombaList = []
+      self.delta = 0.
 
   def _get_types(self):
     """
@@ -108,7 +113,8 @@ float64 r 			# Roomba probability radius"""
           length = len(_x)
         buff.write(struct.pack('<I%ss'%length, length, _x))
         _x = val1
-        buff.write(_get_struct_q2dB3d().pack(_x.id, _x.x, _x.y, _x.detected, _x.static_x, _x.static_y, _x.r))
+        buff.write(_get_struct_q2d2B3d().pack(_x.id, _x.x, _x.y, _x.removed, _x.detected, _x.static_x, _x.static_y, _x.r))
+      buff.write(_get_struct_d().pack(self.delta))
     except struct.error as se: self._check_types(struct.error("%s: '%s' when writing '%s'" % (type(se), str(se), str(locals().get('_x', self)))))
     except TypeError as te: self._check_types(ValueError("%s: '%s' when writing '%s'" % (type(te), str(te), str(locals().get('_x', self)))))
 
@@ -162,10 +168,14 @@ float64 r 			# Roomba probability radius"""
           _v3.frame_id = str[start:end]
         _x = val1
         start = end
-        end += 49
-        (_x.id, _x.x, _x.y, _x.detected, _x.static_x, _x.static_y, _x.r,) = _get_struct_q2dB3d().unpack(str[start:end])
+        end += 50
+        (_x.id, _x.x, _x.y, _x.removed, _x.detected, _x.static_x, _x.static_y, _x.r,) = _get_struct_q2d2B3d().unpack(str[start:end])
+        val1.removed = bool(val1.removed)
         val1.detected = bool(val1.detected)
         self.roombaList.append(val1)
+      start = end
+      end += 8
+      (self.delta,) = _get_struct_d().unpack(str[start:end])
       return self
     except struct.error as e:
       raise genpy.DeserializationError(e) #most likely buffer underfill
@@ -201,7 +211,8 @@ float64 r 			# Roomba probability radius"""
           length = len(_x)
         buff.write(struct.pack('<I%ss'%length, length, _x))
         _x = val1
-        buff.write(_get_struct_q2dB3d().pack(_x.id, _x.x, _x.y, _x.detected, _x.static_x, _x.static_y, _x.r))
+        buff.write(_get_struct_q2d2B3d().pack(_x.id, _x.x, _x.y, _x.removed, _x.detected, _x.static_x, _x.static_y, _x.r))
+      buff.write(_get_struct_d().pack(self.delta))
     except struct.error as se: self._check_types(struct.error("%s: '%s' when writing '%s'" % (type(se), str(se), str(locals().get('_x', self)))))
     except TypeError as te: self._check_types(ValueError("%s: '%s' when writing '%s'" % (type(te), str(te), str(locals().get('_x', self)))))
 
@@ -256,10 +267,14 @@ float64 r 			# Roomba probability radius"""
           _v7.frame_id = str[start:end]
         _x = val1
         start = end
-        end += 49
-        (_x.id, _x.x, _x.y, _x.detected, _x.static_x, _x.static_y, _x.r,) = _get_struct_q2dB3d().unpack(str[start:end])
+        end += 50
+        (_x.id, _x.x, _x.y, _x.removed, _x.detected, _x.static_x, _x.static_y, _x.r,) = _get_struct_q2d2B3d().unpack(str[start:end])
+        val1.removed = bool(val1.removed)
         val1.detected = bool(val1.detected)
         self.roombaList.append(val1)
+      start = end
+      end += 8
+      (self.delta,) = _get_struct_d().unpack(str[start:end])
       return self
     except struct.error as e:
       raise genpy.DeserializationError(e) #most likely buffer underfill
@@ -268,12 +283,12 @@ _struct_I = genpy.struct_I
 def _get_struct_I():
     global _struct_I
     return _struct_I
-_struct_q2dB3d = None
-def _get_struct_q2dB3d():
-    global _struct_q2dB3d
-    if _struct_q2dB3d is None:
-        _struct_q2dB3d = struct.Struct("<q2dB3d")
-    return _struct_q2dB3d
+_struct_q2d2B3d = None
+def _get_struct_q2d2B3d():
+    global _struct_q2d2B3d
+    if _struct_q2d2B3d is None:
+        _struct_q2d2B3d = struct.Struct("<q2d2B3d")
+    return _struct_q2d2B3d
 _struct_3I = None
 def _get_struct_3I():
     global _struct_3I
@@ -286,3 +301,9 @@ def _get_struct_2I():
     if _struct_2I is None:
         _struct_2I = struct.Struct("<2I")
     return _struct_2I
+_struct_d = None
+def _get_struct_d():
+    global _struct_d
+    if _struct_d is None:
+        _struct_d = struct.Struct("<d")
+    return _struct_d

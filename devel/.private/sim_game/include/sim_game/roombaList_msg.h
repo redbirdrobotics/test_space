@@ -27,11 +27,13 @@ struct roombaList_msg_
 
   roombaList_msg_()
     : header()
-    , roombaList()  {
+    , roombaList()
+    , delta(0.0)  {
     }
   roombaList_msg_(const ContainerAllocator& _alloc)
     : header(_alloc)
-    , roombaList(_alloc)  {
+    , roombaList(_alloc)
+    , delta(0.0)  {
   (void)_alloc;
     }
 
@@ -42,6 +44,9 @@ struct roombaList_msg_
 
    typedef std::vector< ::sim_game::roomba_msg_<ContainerAllocator> , typename ContainerAllocator::template rebind< ::sim_game::roomba_msg_<ContainerAllocator> >::other >  _roombaList_type;
   _roombaList_type roombaList;
+
+   typedef double _delta_type;
+  _delta_type delta;
 
 
 
@@ -121,12 +126,12 @@ struct MD5Sum< ::sim_game::roombaList_msg_<ContainerAllocator> >
 {
   static const char* value()
   {
-    return "d463756e2d6323a4bc269f5728fcc07c";
+    return "370246b649b0531a1f6b86644b0b7197";
   }
 
   static const char* value(const ::sim_game::roombaList_msg_<ContainerAllocator>&) { return value(); }
-  static const uint64_t static_value1 = 0xd463756e2d6323a4ULL;
-  static const uint64_t static_value2 = 0xbc269f5728fcc07cULL;
+  static const uint64_t static_value1 = 0x370246b649b0531aULL;
+  static const uint64_t static_value2 = 0x1f6b86644b0b7197ULL;
 };
 
 template<class ContainerAllocator>
@@ -148,6 +153,7 @@ struct Definition< ::sim_game::roombaList_msg_<ContainerAllocator> >
     return "Header header\n\
 \n\
 roomba_msg[] roombaList\n\
+float64 delta \n\
 ================================================================================\n\
 MSG: std_msgs/Header\n\
 # Standard metadata for higher-level stamped data types.\n\
@@ -173,6 +179,7 @@ Header header\n\
 int64 id 			# Roomba id\n\
 float64 x			# Roomba x pose\n\
 float64 y 			# Roomba y pose\n\
+bool removed		# Roomba removed\n\
  \n\
 bool detected		# Roomba detected by drone\n\
 float64 static_x	# Last known x pose \n\
@@ -198,6 +205,7 @@ namespace serialization
     {
       stream.next(m.header);
       stream.next(m.roombaList);
+      stream.next(m.delta);
     }
 
     ROS_DECLARE_ALLINONE_SERIALIZER
@@ -227,6 +235,8 @@ struct Printer< ::sim_game::roombaList_msg_<ContainerAllocator> >
       s << indent;
       Printer< ::sim_game::roomba_msg_<ContainerAllocator> >::stream(s, indent + "    ", v.roombaList[i]);
     }
+    s << indent << "delta: ";
+    Printer<double>::stream(s, indent + "  ", v.delta);
   }
 };
 

@@ -9,7 +9,6 @@
     Topic:      roomba_msgs ~ Contains data on all roombas
     Datatype:   roombaList_msg ~ An array of roomba_msg
 
- Note:          This is based on the work done by Pittsburgh University's PittRAS team
 '''
 import time
 import pyglet

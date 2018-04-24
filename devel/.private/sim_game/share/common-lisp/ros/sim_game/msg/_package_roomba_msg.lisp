@@ -7,6 +7,8 @@
           X
           Y-VAL
           Y
+          REMOVED-VAL
+          REMOVED
           DETECTED-VAL
           DETECTED
           STATIC_X-VAL

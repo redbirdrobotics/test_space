@@ -93,7 +93,7 @@ class Environment(object):
 
             self.roombas.append(obstacle_roomba)
 
-    def populate_msg(self):
+    def populate_msg(self, delta):
         i = 0
         List_msg = roombaList_msg()
         for roomba in self.roombas:
@@ -102,11 +102,18 @@ class Environment(object):
             msg.id = i
             msg.x = roomba.pos[0]
             msg.y = roomba.pos[1]
+            if roomba.state == cfg.ROOMBA_STATE_IDLE:
+                msg.removed = True
+
             msg.detected = roomba.detected
             if msg.detected:
                 msg.static_x = roomba.pos[0]
                 msg.static_y = roomba.pos[1]
+                msg.r = 0
+            else:
+                msg.r += cfg.ROOMBA_LINEAR_SPEED * delta
             List_msg.roombaList.append(msg)
+            List_msg.delta = delta
         self.ros.send_msg(List_msg)
 
     def update(self, delta, elapsed):
@@ -131,8 +138,7 @@ class Environment(object):
 
             # ignore roombas that left the arena
             if (rba.state == cfg.ROOMBA_STATE_IDLE):
-                (rbaList_msg.roombaList[i]).detected = False
-                # rbaList_msg.roombaList.append(rba_msg[i])
+                rba.detected = False
                 continue
 
             rba.update(delta, elapsed)
@@ -188,7 +194,7 @@ class Environment(object):
 
                 del self.activeRoombas[:]
 
-        self.populate_msg()
+        self.populate_msg(delta)
 
         # update the drone
         self.agent.update(delta, elapsed)

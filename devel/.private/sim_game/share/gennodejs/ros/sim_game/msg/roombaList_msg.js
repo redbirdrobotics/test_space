@@ -22,6 +22,7 @@ class roombaList_msg {
       // initObj === null is a special case for deserialization where we don't initialize fields
       this.header = null;
       this.roombaList = null;
+      this.delta = null;
     }
     else {
       if (initObj.hasOwnProperty('header')) {
@@ -36,6 +37,12 @@ class roombaList_msg {
       else {
         this.roombaList = [];
       }
+      if (initObj.hasOwnProperty('delta')) {
+        this.delta = initObj.delta
+      }
+      else {
+        this.delta = 0.0;
+      }
     }
   }
 
@@ -49,6 +56,8 @@ class roombaList_msg {
     obj.roombaList.forEach((val) => {
       bufferOffset = roomba_msg.serialize(val, buffer, bufferOffset);
     });
+    // Serialize message field [delta]
+    bufferOffset = _serializer.float64(obj.delta, buffer, bufferOffset);
     return bufferOffset;
   }
 
@@ -65,6 +74,8 @@ class roombaList_msg {
     for (let i = 0; i < len; ++i) {
       data.roombaList[i] = roomba_msg.deserialize(buffer, bufferOffset)
     }
+    // Deserialize message field [delta]
+    data.delta = _deserializer.float64(buffer, bufferOffset);
     return data;
   }
 
@@ -74,7 +85,7 @@ class roombaList_msg {
     object.roombaList.forEach((val) => {
       length += roomba_msg.getMessageSize(val);
     });
-    return length + 4;
+    return length + 12;
   }
 
   static datatype() {
@@ -84,7 +95,7 @@ class roombaList_msg {
 
   static md5sum() {
     //Returns md5sum for a message object
-    return 'd463756e2d6323a4bc269f5728fcc07c';
+    return '370246b649b0531a1f6b86644b0b7197';
   }
 
   static messageDefinition() {
@@ -93,6 +104,7 @@ class roombaList_msg {
     Header header
     
     roomba_msg[] roombaList
+    float64 delta 
     ================================================================================
     MSG: std_msgs/Header
     # Standard metadata for higher-level stamped data types.
@@ -118,6 +130,7 @@ class roombaList_msg {
     int64 id 			# Roomba id
     float64 x			# Roomba x pose
     float64 y 			# Roomba y pose
+    bool removed		# Roomba removed
      
     bool detected		# Roomba detected by drone
     float64 static_x	# Last known x pose 
@@ -147,6 +160,13 @@ class roombaList_msg {
     }
     else {
       resolved.roombaList = []
+    }
+
+    if (msg.delta !== undefined) {
+      resolved.delta = msg.delta;
+    }
+    else {
+      resolved.delta = 0.0
     }
 
     return resolved;

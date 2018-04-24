@@ -29,6 +29,7 @@ struct roomba_msg_
     , id(0)
     , x(0.0)
     , y(0.0)
+    , removed(false)
     , detected(false)
     , static_x(0.0)
     , static_y(0.0)
@@ -39,6 +40,7 @@ struct roomba_msg_
     , id(0)
     , x(0.0)
     , y(0.0)
+    , removed(false)
     , detected(false)
     , static_x(0.0)
     , static_y(0.0)
@@ -59,6 +61,9 @@ struct roomba_msg_
 
    typedef double _y_type;
   _y_type y;
+
+   typedef uint8_t _removed_type;
+  _removed_type removed;
 
    typedef uint8_t _detected_type;
   _detected_type detected;
@@ -150,12 +155,12 @@ struct MD5Sum< ::sim_game::roomba_msg_<ContainerAllocator> >
 {
   static const char* value()
   {
-    return "ff0d2705bf902e1f7a93e5088d820b1d";
+    return "63fa31bbe183fb576960c616db4b2bac";
   }
 
   static const char* value(const ::sim_game::roomba_msg_<ContainerAllocator>&) { return value(); }
-  static const uint64_t static_value1 = 0xff0d2705bf902e1fULL;
-  static const uint64_t static_value2 = 0x7a93e5088d820b1dULL;
+  static const uint64_t static_value1 = 0x63fa31bbe183fb57ULL;
+  static const uint64_t static_value2 = 0x6960c616db4b2bacULL;
 };
 
 template<class ContainerAllocator>
@@ -179,6 +184,7 @@ struct Definition< ::sim_game::roomba_msg_<ContainerAllocator> >
 int64 id 			# Roomba id\n\
 float64 x			# Roomba x pose\n\
 float64 y 			# Roomba y pose\n\
+bool removed		# Roomba removed\n\
  \n\
 bool detected		# Roomba detected by drone\n\
 float64 static_x	# Last known x pose \n\
@@ -223,6 +229,7 @@ namespace serialization
       stream.next(m.id);
       stream.next(m.x);
       stream.next(m.y);
+      stream.next(m.removed);
       stream.next(m.detected);
       stream.next(m.static_x);
       stream.next(m.static_y);
@@ -254,6 +261,8 @@ struct Printer< ::sim_game::roomba_msg_<ContainerAllocator> >
     Printer<double>::stream(s, indent + "  ", v.x);
     s << indent << "y: ";
     Printer<double>::stream(s, indent + "  ", v.y);
+    s << indent << "removed: ";
+    Printer<uint8_t>::stream(s, indent + "  ", v.removed);
     s << indent << "detected: ";
     Printer<uint8_t>::stream(s, indent + "  ", v.detected);
     s << indent << "static_x: ";

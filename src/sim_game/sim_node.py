@@ -34,7 +34,7 @@ def run_demo():
     sim.setup()
 
     config = pyglet.gl.Config(sample_buffers=1, samples=4)
-    
+
     cfg.load(redbird.redbird_config)
 
     # Setup agent
@@ -44,10 +44,8 @@ def run_demo():
     # Setup Env_Display
     sim_window = Sim_Display(sim)
 
-    def sim_update_func():
-        rba_msg = sim.update()
-
-    # sim_window.set_update_func(sim_update_func)
+    # def sim_update_func(delta):
+    #     sim.set_delta(delta)
 
     # This function runs until esc pressed
     pyglet.app.run()

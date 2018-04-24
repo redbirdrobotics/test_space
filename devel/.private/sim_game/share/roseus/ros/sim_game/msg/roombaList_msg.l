@@ -16,17 +16,19 @@
 
 (defclass sim_game::roombaList_msg
   :super ros::object
-  :slots (_header _roombaList ))
+  :slots (_header _roombaList _delta ))
 
 (defmethod sim_game::roombaList_msg
   (:init
    (&key
     ((:header __header) (instance std_msgs::Header :init))
     ((:roombaList __roombaList) (let (r) (dotimes (i 0) (push (instance sim_game::roomba_msg :init) r)) r))
+    ((:delta __delta) 0.0)
     )
    (send-super :init)
    (setq _header __header)
    (setq _roombaList __roombaList)
+   (setq _delta (float __delta))
    self)
   (:header
    (&rest __header)
@@ -42,6 +44,9 @@
      (progn
        (if __roombaList (setq _roombaList (car __roombaList)))
        _roombaList)))
+  (:delta
+   (&optional __delta)
+   (if __delta (setq _delta __delta)) _delta)
   (:serialization-length
    ()
    (+
@@ -49,6 +54,8 @@
     (send _header :serialization-length)
     ;; sim_game/roomba_msg[] _roombaList
     (apply #'+ (send-all _roombaList :serialization-length)) 4
+    ;; float64 _delta
+    8
     ))
   (:serialize
    (&optional strm)
@@ -61,6 +68,8 @@
      (dolist (elem _roombaList)
        (send elem :serialize s)
        )
+     ;; float64 _delta
+       (sys::poke _delta (send s :buffer) (send s :count) :double) (incf (stream-count s) 8)
      ;;
      (if (null strm) (get-output-stream-string s))))
   (:deserialize
@@ -74,16 +83,19 @@
      (dolist (elem- _roombaList)
      (send elem- :deserialize buf ptr-) (incf ptr- (send elem- :serialization-length))
      ))
+   ;; float64 _delta
+     (setq _delta (sys::peek buf ptr- :double)) (incf ptr- 8)
    ;;
    self)
   )
 
-(setf (get sim_game::roombaList_msg :md5sum-) "d463756e2d6323a4bc269f5728fcc07c")
+(setf (get sim_game::roombaList_msg :md5sum-) "370246b649b0531a1f6b86644b0b7197")
 (setf (get sim_game::roombaList_msg :datatype-) "sim_game/roombaList_msg")
 (setf (get sim_game::roombaList_msg :definition-)
       "Header header
 
 roomba_msg[] roombaList
+float64 delta 
 ================================================================================
 MSG: std_msgs/Header
 # Standard metadata for higher-level stamped data types.
@@ -109,6 +121,7 @@ Header header
 int64 id 			# Roomba id
 float64 x			# Roomba x pose
 float64 y 			# Roomba y pose
+bool removed		# Roomba removed
  
 bool detected		# Roomba detected by drone
 float64 static_x	# Last known x pose 
@@ -118,6 +131,6 @@ float64 r 			# Roomba probability radius
 
 
 
-(provide :sim_game/roombaList_msg "d463756e2d6323a4bc269f5728fcc07c")
+(provide :sim_game/roombaList_msg "370246b649b0531a1f6b86644b0b7197")
 
 

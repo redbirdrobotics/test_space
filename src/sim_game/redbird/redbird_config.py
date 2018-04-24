@@ -18,6 +18,9 @@ RENDER_AGENT = render.render_corvus
 # REDBIRD DRONE CONFIGURATION
 #
 
+ROOMBA_MIN_RADIUS = 1
+ROOMBA_MAX_RADIUS = 6.6
+
 # the radius of sight for drone
 CORVUS_FOV = 3
 

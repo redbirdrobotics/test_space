@@ -3,4 +3,6 @@
           HEADER
           ROOMBALIST-VAL
           ROOMBALIST
+          DELTA-VAL
+          DELTA
 ))
