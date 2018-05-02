@@ -1,8 +1,0 @@
-Symlinking /home/alexander/test_space/devel/./setup.bash
-Symlinking /home/alexander/test_space/devel/./setup.sh
-Symlinking /home/alexander/test_space/devel/./_setup_util.py
-Symlinking /home/alexander/test_space/devel/./setup.zsh
-Symlinking /home/alexander/test_space/devel/./env.sh
-Symlinking /home/alexander/test_space/devel/share/catkin_tools_prebuild/cmake/catkin_tools_prebuildConfig-version.cmake
-Symlinking /home/alexander/test_space/devel/share/catkin_tools_prebuild/cmake/catkin_tools_prebuildConfig.cmake
-Symlinking /home/alexander/test_space/devel/lib/pkgconfig/catkin_tools_prebuild.pc
