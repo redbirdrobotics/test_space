@@ -2,5 +2,7 @@
 	<group ns="redbird_sim">
 		<node name="demo" pkg="sim_game" type="demo_node.py" output="screen" />
 		<node name="sim" pkg="sim_game" type="sim_node.py" output="screen" />
+		<node name="on_sim" pkg="sim_game" type="onboard_sim_node.py" output="screen"/>
+		<node name="diff" pkg="sim_game" type="differentiation.py" output="screen"/>
 	</group>
 </launch>

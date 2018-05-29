@@ -19,7 +19,8 @@ import geometry
 import config as cfg
 from robots import roomba
 from communication import ROSExtension
-from sim_game.msg import roomba_msg, roombaList_msg
+#from sim_game.msg import roomba_msg, roombaList_msg
+from sim_game.msg import fake_localization_map, fake_localization
 
 class Environment(object):
     
@@ -42,7 +43,7 @@ class Environment(object):
     def make_node(self):
         self.ros = ROSExtension()
         self.ros.init_ros_node('Demo_Node')
-        self.ros.create_publisher('roomba_msgs', roombaList_msg)
+        self.ros.create_publisher('Target_Roomba', fake_localization_map)
 
     def reset(self):
         '''
@@ -93,6 +94,7 @@ class Environment(object):
 
             self.roombas.append(obstacle_roomba)
 
+    '''
     def populate_msg(self, delta):
         i = 0
         List_msg = roombaList_msg()
@@ -115,6 +117,36 @@ class Environment(object):
             List_msg.roombaList.append(msg)
             List_msg.delta = delta
         self.ros.send_msg(List_msg)
+    '''
+
+    def populate_msg(self, elapsed):
+
+        msgMap = []
+
+        roombaList = fake_localization_map()
+
+        roombaList.elapsed = elapsed
+
+        for roomba in self.roombas:
+
+            if roomba.detected:
+
+                msg = fake_localization()
+
+                msg.x, msg.y = roomba.pos
+
+                msg.id = roomba.tag
+
+                msg.checked, msg.active = False, True
+
+                msgMap.append(msg)
+
+        roombaList.localization_map = msgMap
+
+        self.ros.send_msg(roombaList)
+
+        #rospy.loginfo(roombaList)
+            
 
     def update(self, delta, elapsed):
         '''
@@ -194,7 +226,7 @@ class Environment(object):
 
                 del self.activeRoombas[:]
 
-        self.populate_msg(delta)
+        self.populate_msg(elapsed)
 
         # update the drone
         self.agent.update(delta, elapsed)

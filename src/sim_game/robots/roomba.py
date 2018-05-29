@@ -39,6 +39,7 @@ class Roomba(object):
         self.heading = heading
         self.tag = tag
         self.detected = False
+        self.elapsed = 0
 
         self.collisions = {
             'front': False,
@@ -152,6 +153,8 @@ class TargetRoomba(Roomba):
         elif self.state != cfg.ROOMBA_STATE_IDLE:
             assert False
 
+        self.elapsed = elapsed / 1000
+
 class ObstacleRoomba(Roomba):
     '''
     Represents an obstacle roomba.
@@ -178,3 +181,5 @@ class ObstacleRoomba(Roomba):
             # reorient so we tangent to a circle centered at the origin
             ang = np.arctan2(10 - self.pos[1], 10 - self.pos[0])
             self.heading = ang + (cfg.PI / 2)
+
+        self.elapsed = elapsed / 1000

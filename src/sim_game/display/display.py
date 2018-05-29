@@ -17,6 +17,8 @@ from pyglet.gl import *
 import numpy as np
 import time
 
+from sim_game.msg import fake_localization, Sim
+
 import config as cfg
 from robots import roomba
 import geometry
@@ -309,6 +311,46 @@ class Sim_Display(pyglet.window.Window):
     def on_draw(self):
 
         pyglet.clock.tick()
+
+        glClear(GL_COLOR_BUFFER_BIT)
+        
+        Sim_Display._draw_gridlines()
+
+        self._draw_header(self.subject.headerArgs,
+                          self.subject.headerLabels)
+
+        roombaListDiff = self.subject.get_diff_msg()
+    
+        roombaListProbTR, roombaListProbOR = self.subject.get_prob_msgs()
+
+        if not len(roombaListDiff) == 0:
+
+            for roomba in roombaListDiff:
+
+                XYR = (roomba.x, roomba.y, 0.22)
+
+                Sim_Display._draw_probability_radius(XYR)
+
+        if not len(roombaListProbTR) == 0:
+
+            for roomba in roombaListProbTR:
+
+                XYR = (roomba.x, roomba.y, roomba.prob_rad)
+                
+                Sim_Display._draw_probability_radius(XYR)
+                
+        if not len(roombaListProbOR) == 0:
+            
+            for roomba in roombaListProbOR:
+
+                XYR = (roomba.x, roomba.y, 0.22)
+
+                Sim_Display._draw_obstacle_roomba(XYR)
+
+        Sim_Display._draw_drone(self.subject.agent)
+
+	'''
+        pyglet.clock.tick()
         glClear(GL_COLOR_BUFFER_BIT)
 
         Sim_Display._draw_gridlines()
@@ -333,8 +375,10 @@ class Sim_Display(pyglet.window.Window):
                 Sim_Display._draw_obstacle_roomba(roomba)
 
         Sim_Display._draw_drone(self.subject.agent)
+	'''
 
     def on_mouse_release(self, x, y, button, modifiers):
+
         x = (x - 10) * 20.0 / (self.get_size()[0] - 20.0)
         y = (y - 10) * 20.0 / (self.get_size()[1] - 20.0)
 
@@ -361,7 +405,8 @@ class Sim_Display(pyglet.window.Window):
 
     def get_XYR(self, roomba):
         return self.subject.XYR[roomba.id - 1]
-
+		
+	'''
     @staticmethod
     def _draw_probability_radius(r, XYR, delta):
         print(XYR)
@@ -372,6 +417,12 @@ class Sim_Display(pyglet.window.Window):
             else:
                 radius = XYR[2] + cfg.ROOMBA_LINEAR_SPEED * delta
                 Sim_Display._draw_hollow_circle((XYR[0],XYR[1]),radius)
+	'''
+    @staticmethod
+    def _draw_probability_radius(XYR):
+
+	   Sim_Display._draw_hollow_circle((XYR[0],XYR[1]), XYR[2])
+
 
     @staticmethod
     def _draw_target_roomba(r, special_state=None):
@@ -406,6 +457,7 @@ class Sim_Display(pyglet.window.Window):
 
         glEnd()
 
+	'''
     @staticmethod
     def _draw_obstacle_roomba(r):
         pos = (r.x, r.y)
@@ -432,6 +484,33 @@ class Sim_Display(pyglet.window.Window):
         # glVertex2f(np.cos(heading) * radius + pos[0], np.sin(heading) * radius + pos[1])
 
         glEnd()
+	'''
+
+    @staticmethod
+    def _draw_obstacle_roomba(pos):
+        #heading = r.heading
+        vertex_count = cfg.GRAPHICS_CIRCLE_VERTICES
+        radius = cfg.ROOMBA_RADIUS
+
+        glEnable(GL_BLEND)
+        glEnable(GL_LINE_SMOOTH)
+        glHint(GL_LINE_SMOOTH_HINT,GL_NICEST)
+
+        # Outline
+        # if r.state == cfg.ROOMBA_STATE_FORWARD or True:
+        #     glColor3f(1,0.2,0.2)
+        # elif r.state == cfg.ROOMBA_STATE_TURNING:
+        #     glColor3f(1,0.8,0.8)
+
+        Sim_Display._draw_hollow_circle(pos, 0.2)
+
+        # Direction indicator
+        glBegin(GL_LINES)
+
+        glVertex2f(pos[0], pos[1])
+        # glVertex2f(np.cos(heading) * radius + pos[0], np.sin(heading) * radius + pos[1])
+
+        glEnd()
 
     @staticmethod
     def _draw_drone(drone=None):
@@ -444,13 +523,15 @@ class Sim_Display(pyglet.window.Window):
         # mins = elapsed_secs // 60
         # secs = elapsed_secs % 60
         self.set_caption(
-            '%s %d %s %d %s %d'%(
+            '%s %d %s %d %s %d %s %d'%(
                 labels[0],
                 values[0],
                 labels[1],
                 values[1],
                 labels[2],
-                values[2]))
+                values[2],
+                labels[3],
+                values[3]))
 
     @staticmethod
     def _draw_gridlines():

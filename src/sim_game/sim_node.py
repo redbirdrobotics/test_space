@@ -18,7 +18,7 @@ import config as cfg
 import redbird.redbird_config
 from display import Sim_Display
 from communication import ROSExtension
-from onboard_simulation import Simulation_Node
+from onboard_simulation import Tmp_Simulation_Node
 from sim_game.msg import roomba_msg, roombaList_msg
 
 __author__ = "Alex Rickert"
@@ -30,7 +30,7 @@ def main():
 def run_demo():
 
     # Setup Simulation
-    sim = Simulation_Node()
+    sim = Tmp_Simulation_Node()
     sim.setup()
 
     config = pyglet.gl.Config(sample_buffers=1, samples=4)

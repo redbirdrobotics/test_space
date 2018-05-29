@@ -52,6 +52,16 @@ find_package(catkin REQUIRED COMPONENTS
    FILES
    roomba_msg.msg
    roombaList_msg.msg
+
+   Sim.msg
+   SimMap.msg
+
+   fake_localization.msg
+   obstacle_roomba.msg
+   fake_localization_map.msg
+
+   FC_Roombas_Map.msg
+   FC_Roombas.msg
  )
 
 ## Generate services in the 'srv' folder
