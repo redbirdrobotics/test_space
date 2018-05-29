@@ -9,6 +9,7 @@ class Corvus(Drone):
         super(Corvus, self).update(delta, elapsed)
 
     def detects_roomba(self, rba):
+        # TODO: emulate actual detection shape
         dist2 = pow((self.xy_pos[0] - rba.pos[0]), 2) + pow((self.xy_pos[1] - rba.pos[1]), 2)
         dist = np.sqrt(dist2)
         return dist < cfg.CORVUS_FOV
