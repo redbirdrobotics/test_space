@@ -1,8 +1,0 @@
-prefix=/home/alexander/test_space/devel/.private/sim_game
-
-Name: sim_game
-Description: Description of sim_game
-Version: 0.0.0
-Cflags: -I/home/alexander/test_space/devel/.private/sim_game/include
-Libs: -L/home/alexander/test_space/devel/.private/sim_game/lib 
-Requires: roscpp rospy std_msgs message_runtime

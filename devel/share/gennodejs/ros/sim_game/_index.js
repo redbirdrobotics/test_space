@@ -1,1 +1,0 @@
-/home/alexander/test_space/devel/.private/sim_game/share/gennodejs/ros/sim_game/_index.js
