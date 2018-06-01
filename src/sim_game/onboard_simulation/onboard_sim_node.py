@@ -7,15 +7,13 @@ import util
 from sim_game.msg import SimMap, fake_localization, fake_localization_map
 import rospy
 import numpy as np
-from threading import Lock
 
 class On_Board_Sim():
 
     def __init__(self):
 
-        self.my_mutex = Lock()
 
-        self.list_of_active_roombas = []
+        self.list_of_unactive_roombas = []
 
         self.list_of_obstacle_roombas = []
 
@@ -38,91 +36,85 @@ class On_Board_Sim():
 
         self.pub = self.ros.create_publisher('Probability_Message', SimMap)
 
-        self.target_length = 0
-
     def listener_for_roombas(self, ros_msg):
 
-        self.my_mutex.acquire()
+        if len(ros_msg.localization_map) > 0:
 
-        self.target_length = len(ros_msg.localization_map)
+            for msg in ros_msg.localization_map:
+                
+                ground_roomba = Roomba()
 
-        self.my_mutex.release()
+                ground_roomba.pos = ( msg.x, msg.y )
 
-        for msg in ros_msg.localization_map:
-            
-            ground_roomba = Roomba()
+                ground_roomba.id = msg.id
 
-            ground_roomba.pos = ( msg.x, msg.y )
-
-            ground_roomba.id = msg.id
-
-            self.update_active_roombas(ground_roomba)
+                self.update_active_roombas(ground_roomba)
 
     def update_active_roombas(self, roomba):
 
-        for target in self.list_of_active_roombas:
+        if len(self.list_of_unactive_roombas) > 0:
 
-            if util.circle_intersects_circle(target.pos, roomba.pos, roomba.max_radius):
+            for target in self.list_of_unactive_roombas:
 
-                self.collided(roomba, target)
+                if util.circle_intersects_circle(target.pos, roomba.pos, roomba.max_radius):
 
-            if(util.circle_intersects_goal(roomba.pos, roomba.max_radius)):
+                    self.collided(roomba, target)
 
-                roomba.exceeds_boundary['goal_line'] = True
+                if(util.circle_intersects_goal(roomba.pos, roomba.max_radius)):
 
-                roomba.time_to_look = util.min_time(roomba.pos, 0)
+                    roomba.exceeds_boundary['goal_line'] = True
 
-            if(util.circle_intersects_rboundary(roomba.pos, roomba.max_radius)):
+                    roomba.time_to_look = util.min_time(roomba.pos, 0)
 
-                roomba.exceeds_boundary['right_boundary'] = True
+                if(util.circle_intersects_rboundary(roomba.pos, roomba.max_radius)):
 
-                roomba.time_to_look = util.min_time(roomba.pos, 1)
+                    roomba.exceeds_boundary['right_boundary'] = True
 
-            if(util.circle_intersects_bboundary(roomba.pos, roomba.max_radius)):
+                    roomba.time_to_look = util.min_time(roomba.pos, 1)
 
-                roomba.exceeds_boundary['bottom_boundary'] = True
+                if(util.circle_intersects_bboundary(roomba.pos, roomba.max_radius)):
 
-                roomba.time_to_look = util.min_time(roomba.pos, 2)
+                    roomba.exceeds_boundary['bottom_boundary'] = True
 
-            if(util.circle_intersects_lboundary(roomba.pos, roomba.max_radius)):
+                    roomba.time_to_look = util.min_time(roomba.pos, 2)
 
-                roomba.exceeds_boundary['left_boundary'] = True
+                if(util.circle_intersects_lboundary(roomba.pos, roomba.max_radius)):
 
-                roomba.time_to_look = util.min_time(roomba.pos, 3)
+                    roomba.exceeds_boundary['left_boundary'] = True
 
-        self.my_mutex.acquire()
+                    roomba.time_to_look = util.min_time(roomba.pos, 3)
 
-        if len(self.list_of_active_roombas) < self.target_length:
-
-            self.my_mutex.release()
-
-            self.list_of_active_roombas.append(roomba)
+            self.list_of_unactive_roombas.append(roomba)
 
         else:
 
-            self.my_mutex.release()
+            self.list_of_unactive_roombas.append(roomba)
 
-            self.manage_active_robots()
-
-        #rospy.loginfo(len(self.list_of_active_roombas))
+        #rospy.loginfo(len(self.list_of_unactive_roombas))
 
     def manage_active_robots(self):
 
-        index = 0
-
         index_to_remove = []
 
-        for rba in self.list_of_active_roombas:
+        index = 0
+
+        rospy.loginfo( len(self.list_of_unactive_roombas) )
+
+        for rba in self.list_of_unactive_roombas:
 
             if rba._probability <= 0:
 
                 index_to_remove.append(index)
 
-            index+=1
+            index += 1
 
         for i in index_to_remove:
 
-            del self.list_of_active_roombas[i]
+            rospy.loginfo( 'index 2' )
+
+            rospy.loginfo( i )
+
+            del self.list_of_unactive_roombas[i]
 
     def collided(self, roomba_a, roomba_b):
 
@@ -138,7 +130,7 @@ class On_Board_Sim():
 
         roombaMap = SimMap()
 
-        for roomba in self.list_of_active_roombas:
+        for roomba in self.list_of_unactive_roombas:
 
             TRmsgMap.append(roomba.ros_msg_type)
         
@@ -160,21 +152,19 @@ class On_Board_Sim():
 
         while not rospy.is_shutdown():
 
-            for roomba in self.list_of_active_roombas:
+            for roomba in self.list_of_unactive_roombas:
 
                 if roomba._probability > 0:
 
                     roomba.update()
+
+                    self.manage_active_robots()
 
             for roomba in self.list_of_obstacle_roombas:
 
                 roomba.update()
 
             self.publish_message()
-
-            index = 0
-
-            index_to_remove = []
 
             rospy.sleep(1)
 
